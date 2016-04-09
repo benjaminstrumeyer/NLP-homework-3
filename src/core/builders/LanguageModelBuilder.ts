@@ -1,9 +1,8 @@
 import {FileWorker} from "../FileWorker";
-import {LanguageModel} from "../training/LanguageModel";
 
 export class LanguageModelBuilder
 {
-    public static buildLanguageModel():LanguageModel
+    public static buildLanguageModel()
     {
         // Try to read from file, otherwise build from training data
         var languageModel = LanguageModelBuilder.buildLanguageModelFromFile();
@@ -16,7 +15,7 @@ export class LanguageModelBuilder
         return languageModel;
     }
 
-    public static buildLanguageModelFromTrainingData():LanguageModel
+    public static buildLanguageModelFromTrainingData()
     {
         // Get training data
         var trainingData = FileWorker.getTrainingCorpus();
@@ -33,7 +32,7 @@ export class LanguageModelBuilder
         return languageModel;
     }
 
-    public static buildLanguageModelFromFile():LanguageModel
+    public static buildLanguageModelFromFile()
     {
         // Try to read from the language model file, return null if file not found
         var corpus = FileWorker.readLanguageModelFile();

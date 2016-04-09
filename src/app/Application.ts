@@ -2,9 +2,6 @@ import readlineSync = require("readline-sync");
 
 import {CommandLineHandler} from "./handlers/CommandLineHandler";
 import {LanguageModelHandler} from "./handlers/LanguageModelHandler";
-import {EvaluatorHandler} from "./handlers/EvaluatorHandler";
-import {AnalyzerHandler} from "./handlers/AnalyzerHandler";
-import {OutputHandler} from "./handlers/OutputHandler";
 
 export class Application
 {
@@ -22,17 +19,6 @@ export class Application
         readline.promptCLLoop(
             {
                 help: CommandLineHandler.printHelpText,
-
-                rebuild: LanguageModelHandler.rebuild,
-
-                accuracy: EvaluatorHandler.evaluateAccuracy,
-                precision: EvaluatorHandler.evaluatePrecision,
-                recall: EvaluatorHandler.evaluateRecall,
-                f1: EvaluatorHandler.evaluateF1,
-
-                confusion: AnalyzerHandler.generateConfusionMatrix,
-
-                output: OutputHandler.outputTaggedCorpus,
 
                 exit: Application.exit
             });
