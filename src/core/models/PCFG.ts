@@ -8,6 +8,6 @@ export class PCFG
 
     public toString():string
     {
-        return this.toString();
+        return this.root.toString();
     }
 }

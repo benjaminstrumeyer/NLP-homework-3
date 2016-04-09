@@ -3,7 +3,7 @@ class PCFG {
     constructor() {
     }
     toString() {
-        return this.toString();
+        return this.root.toString();
     }
 }
 exports.PCFG = PCFG;

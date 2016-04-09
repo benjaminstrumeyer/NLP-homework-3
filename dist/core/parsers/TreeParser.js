@@ -28,6 +28,7 @@ class TreeParser {
                 nodeName += currentChar;
             }
         }
+        return pcfgTree;
     }
 }
 exports.TreeParser = TreeParser;
