@@ -4,10 +4,7 @@ export class PCFG
 {
     public root:TreeNode;
 
-    constructor(root:TreeNode)
-    {
-        this.root = root;
-    }
+    constructor() {}
 
     public toString():string
     {

@@ -8,9 +8,11 @@ export class TreeNode
     constructor(data:string, parent:TreeNode = null)
     {
         this.data = data;
-
         this.parent = parent;
         this.children = [];
+        if (parent) {
+            parent.children.push(this);
+        }
     }
 
     public isTerminal():boolean

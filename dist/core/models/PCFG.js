@@ -1,7 +1,6 @@
 "use strict";
 class PCFG {
-    constructor(root) {
-        this.root = root;
+    constructor() {
     }
     toString() {
         return this.toString();

@@ -4,6 +4,9 @@ class TreeNode {
         this.data = data;
         this.parent = parent;
         this.children = [];
+        if (parent) {
+            parent.children.push(this);
+        }
     }
     isTerminal() {
         return this.children.length === 0;
