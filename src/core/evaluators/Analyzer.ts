@@ -1,4 +1,4 @@
-import {WordTagPair} from "../models/WordTagPair";
+import {WordTagPair} from "../models/TreeNode";
 
 export class Analyzer
 {
