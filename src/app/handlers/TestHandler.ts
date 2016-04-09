@@ -1,20 +1,21 @@
 import {PCFG} from "../../core/models/PCFG";
 import {TreeNode} from "../../core/models/TreeNode";
+import {FileWorker} from "../../core/FileWorker";
+import {TreeParser} from "../../core/parsers/TreeParser";
 
 export class TestHandler
 {
     public static testTreePrint()
     {
-        var tree = new PCFG();
+        var trainTrees = FileWorker.readTextFile("./data/train.trees");
 
-        tree.root = new TreeNode("TOP");
-        tree.root.children.push(
-            new TreeNode("SQ"),
-            new TreeNode("PUNC")
-        );
+        var trees = trainTrees.split(/\n/g);
 
-        var result = tree.toString();
+        //for (let tree of trees)
+        //{
+            let parsed = TreeParser.parseTree(trees[1]);
 
-        console.log(result);
+            console.log(parsed.toString());
+        //}
     }
 }

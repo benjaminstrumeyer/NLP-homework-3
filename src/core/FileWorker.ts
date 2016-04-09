@@ -47,6 +47,11 @@ export class FileWorker
         jsonfile.writeFileSync(FileWorker._languageModelFile, languageModel.corpus);
     }
 
+    public static readTextFile(filename:string):string
+    {
+        return fs.readFileSync(filename).toString();
+    }
+
     public static writeTextFile(filename:string, data:string)
     {
         // Create directory for the file

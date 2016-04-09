@@ -30,6 +30,9 @@ class FileWorker {
         }
         jsonfile.writeFileSync(FileWorker._languageModelFile, languageModel.corpus);
     }
+    static readTextFile(filename) {
+        return fs.readFileSync(filename).toString();
+    }
     static writeTextFile(filename, data) {
         try {
             var dir = path.parse(filename).dir;

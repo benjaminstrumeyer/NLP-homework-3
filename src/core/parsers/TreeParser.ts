@@ -3,7 +3,7 @@ import {TreeNode} from "../models/TreeNode";
 
 export class TreeParser
 {
-    public parseTree(tree:string):PCFG
+    public static parseTree(tree:string):PCFG
     {
         var nodeName = "";
         var currentNode:TreeNode;
@@ -21,7 +21,7 @@ export class TreeParser
             {
                 let node = new TreeNode(nodeName, (currentNode || null));
 
-                if (!!currentNode)
+                if (!currentNode)
                 {
                     pcfgTree.root = node;
                 }

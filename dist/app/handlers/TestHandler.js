@@ -1,13 +1,12 @@
 "use strict";
-const PCFG_1 = require("../../core/models/PCFG");
-const TreeNode_1 = require("../../core/models/TreeNode");
+const FileWorker_1 = require("../../core/FileWorker");
+const TreeParser_1 = require("../../core/parsers/TreeParser");
 class TestHandler {
     static testTreePrint() {
-        var tree = new PCFG_1.PCFG();
-        tree.root = new TreeNode_1.TreeNode("TOP");
-        tree.root.children.push(new TreeNode_1.TreeNode("SQ"), new TreeNode_1.TreeNode("PUNC"));
-        var result = tree.toString();
-        console.log(result);
+        var trainTrees = FileWorker_1.FileWorker.readTextFile("./data/train.trees");
+        var trees = trainTrees.split(/\n/g);
+        let parsed = TreeParser_1.TreeParser.parseTree(trees[1]);
+        console.log(parsed.toString());
     }
 }
 exports.TestHandler = TestHandler;

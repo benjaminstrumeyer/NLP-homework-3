@@ -2,7 +2,7 @@
 const PCFG_1 = require("../models/PCFG");
 const TreeNode_1 = require("../models/TreeNode");
 class TreeParser {
-    parseTree(tree) {
+    static parseTree(tree) {
         var nodeName = "";
         var currentNode;
         var pcfgTree = new PCFG_1.PCFG();
@@ -13,7 +13,7 @@ class TreeParser {
             }
             if (currentChar === "(") {
                 let node = new TreeNode_1.TreeNode(nodeName, (currentNode || null));
-                if (!!currentNode) {
+                if (!currentNode) {
                     pcfgTree.root = node;
                 }
                 currentNode = node;
