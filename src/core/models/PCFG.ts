@@ -8,6 +8,9 @@ export class PCFG
 
     public toString():string
     {
+        if(!this.root)
+            return null;
+
         return this.root.toString();
     }
 }

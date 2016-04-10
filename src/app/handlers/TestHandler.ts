@@ -11,11 +11,12 @@ export class TestHandler
 
         var trees = trainTrees.split(/\n/g);
 
-        //for (let tree of trees)
-        //{
-            let parsed = TreeParser.parseTree(trees[1]);
+        for (let tree of trees)
+        {
+            let parsed = TreeParser.parseTree(tree);
 
-            console.log(parsed.toString());
-        //}
+            if(parsed)
+                console.log(parsed.toString());
+        }
     }
 }

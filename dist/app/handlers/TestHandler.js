@@ -5,8 +5,11 @@ class TestHandler {
     static testTreePrint() {
         var trainTrees = FileWorker_1.FileWorker.readTextFile("./data/train.trees");
         var trees = trainTrees.split(/\n/g);
-        let parsed = TreeParser_1.TreeParser.parseTree(trees[1]);
-        console.log(parsed.toString());
+        for (let tree of trees) {
+            let parsed = TreeParser_1.TreeParser.parseTree(tree);
+            if (parsed)
+                console.log(parsed.toString());
+        }
     }
 }
 exports.TestHandler = TestHandler;

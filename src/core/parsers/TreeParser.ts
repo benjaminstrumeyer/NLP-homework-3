@@ -5,6 +5,11 @@ export class TreeParser
 {
     public static parseTree(tree:string):PCFG
     {
+        // If tree is null or white space, then can't parse it man
+        if(!tree || (/^\s+$/g).test(tree))
+            return null;
+
+        // Otherwise go parse that motherfucker
         var nodeName = "";
         var currentNode:TreeNode;
         var pcfgTree = new PCFG();
