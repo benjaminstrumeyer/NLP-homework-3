@@ -8,9 +8,8 @@ class TreeParser {
         var pcfgTree = new PCFG_1.PCFG();
         for (let i = 0; i < tree.length; i++) {
             let currentChar = tree[i];
-            if (currentChar === " ") {
+            if (currentChar === " ")
                 continue;
-            }
             if (currentChar === "(") {
                 let node = new TreeNode_1.TreeNode(nodeName, (currentNode || null));
                 if (!currentNode) {
@@ -20,7 +19,8 @@ class TreeParser {
                 nodeName = "";
             }
             else if (currentChar === ")") {
-                new TreeNode_1.TreeNode(nodeName, currentNode);
+                if (nodeName)
+                    new TreeNode_1.TreeNode(nodeName, currentNode);
                 currentNode = currentNode.parent;
                 nodeName = "";
             }
