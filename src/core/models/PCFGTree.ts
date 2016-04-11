@@ -4,11 +4,13 @@ export class PCFGTree
 {
     public root:TreeNode;
 
-    constructor() {}
-
-    public toString():string
+    constructor()
     {
-        if(!this.root)
+    }
+
+    public toString = function ():string
+    {
+        if (!this.root)
             return null;
 
         return this.root.toString();

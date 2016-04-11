@@ -21,7 +21,7 @@ export class TreeNode
         return this.children.length === 0;
     }
 
-    public toString(depth?:number):string
+    public toString = function(depth?:number):string
     {
         depth = depth || 0;
 
