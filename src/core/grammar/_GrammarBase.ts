@@ -2,6 +2,7 @@ import {GrammarRule} from "../models/GrammarRule";
 import {TreeParser} from "../parsers/TreeParser";
 import {PCFGTree} from "../models/PCFGTree";
 import {TreeNode} from "../models/TreeNode";
+import {Preprocess} from "../Preprocess";
 
 export abstract class _GrammarBase
 {
@@ -9,15 +10,15 @@ export abstract class _GrammarBase
 
     public train(unparsedTrees:string)
     {
-        var treeLines = unparsedTrees.split(/\n/g);
+        var treeLines = Preprocess.getTreeLines(unparsedTrees);
 
-        //for (let tree of treeLines)
-        //{
-            let parsedTree = TreeParser.parseTree(treeLines[0]);
+        for (let tree of treeLines)
+        {
+            let parsedTree = TreeParser.parseTree(tree);
             let rules = this.convertTreeToRules(parsedTree);
 
-            this.rules = rules;
-        //}
+            this.rules = (this.rules || []).concat(rules);
+        }
 
         console.log(this.rules.map(x => x.toString()));
     }

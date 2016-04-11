@@ -1,12 +1,15 @@
 "use strict";
 const GrammarRule_1 = require("../models/GrammarRule");
 const TreeParser_1 = require("../parsers/TreeParser");
+const Preprocess_1 = require("../Preprocess");
 class _GrammarBase {
     train(unparsedTrees) {
-        var treeLines = unparsedTrees.split(/\n/g);
-        let parsedTree = TreeParser_1.TreeParser.parseTree(treeLines[0]);
-        let rules = this.convertTreeToRules(parsedTree);
-        this.rules = rules;
+        var treeLines = Preprocess_1.Preprocess.getTreeLines(unparsedTrees);
+        for (let tree of treeLines) {
+            let parsedTree = TreeParser_1.TreeParser.parseTree(tree);
+            let rules = this.convertTreeToRules(parsedTree);
+            this.rules = (this.rules || []).concat(rules);
+        }
         console.log(this.rules.map(x => x.toString()));
     }
     convertTreeToRules(tree) {

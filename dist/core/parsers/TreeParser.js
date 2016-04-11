@@ -3,8 +3,6 @@ const PCFGTree_1 = require("../models/PCFGTree");
 const TreeNode_1 = require("../models/TreeNode");
 class TreeParser {
     static parseTree(tree) {
-        if (!tree || (/^\s+$/g).test(tree))
-            return null;
         var nodeName = "";
         var currentNode;
         var pcfgTree = new PCFGTree_1.PCFGTree();
