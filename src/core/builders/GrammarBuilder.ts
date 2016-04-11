@@ -6,14 +6,14 @@ export class GrammarBuilder
     public static buildGrammar():PCFG
     {
         // Try to read from file, otherwise build from training data
-        var languageModel = GrammarBuilder.buildGrammarFromFile();
-        if (!languageModel)
+        var grammar = GrammarBuilder.buildGrammarFromFile();
+        if (!grammar)
         {
             // Build from training data
-            languageModel = GrammarBuilder.buildGrammarFromTrainingData();
+            grammar = GrammarBuilder.buildGrammarFromTrainingData();
         }
 
-        return languageModel;
+        return grammar;
     }
 
     public static buildGrammarFromTrainingData():PCFG

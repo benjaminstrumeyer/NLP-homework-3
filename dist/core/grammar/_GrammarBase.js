@@ -7,7 +7,7 @@ class _GrammarBase {
         let parsedTree = TreeParser_1.TreeParser.parseTree(treeLines[0]);
         let rules = this.convertTreeToRules(parsedTree);
         this.rules = rules;
-        console.log(this.rules);
+        console.log(this.rules.map(x => x.toString()));
     }
     convertTreeToRules(tree) {
         var root = tree.root;

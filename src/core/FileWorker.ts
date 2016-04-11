@@ -1,6 +1,7 @@
 import fs = require("fs");
 import path = require("path");
 import jsonfile = require("jsonfile");
+import {PCFG} from "./grammar/PCFG";
 
 export class FileWorker
 {
@@ -16,7 +17,7 @@ export class FileWorker
         return fs.readFileSync("./data/train.trees").toString();
     }
 
-    public static readGrammarFile()
+    public static readGrammarFile():PCFG
     {
         try
         {
@@ -30,7 +31,7 @@ export class FileWorker
         }
     }
 
-    public static writeGrammarFile(languageModel)
+    public static writeGrammarFile(grammar:PCFG)
     {
         // Create directory for language model file
         try
@@ -44,7 +45,7 @@ export class FileWorker
         }
 
         // Write the language model file
-        jsonfile.writeFileSync(FileWorker._grammarFile, languageModel.corpus);
+        jsonfile.writeFileSync(FileWorker._grammarFile, grammar);
     }
 
     public static readTextFile(filename:string):string

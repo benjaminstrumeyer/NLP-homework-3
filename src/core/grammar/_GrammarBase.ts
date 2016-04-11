@@ -19,7 +19,7 @@ export abstract class _GrammarBase
             this.rules = rules;
         //}
 
-        console.log(this.rules);
+        console.log(this.rules.map(x => x.toString()));
     }
 
     private convertTreeToRules(tree:PCFGTree):GrammarRule[]

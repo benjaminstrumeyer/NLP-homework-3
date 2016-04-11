@@ -19,7 +19,7 @@ class FileWorker {
             return null;
         }
     }
-    static writeGrammarFile(languageModel) {
+    static writeGrammarFile(grammar) {
         try {
             var dir = path.parse(FileWorker._grammarFile).dir;
             fs.mkdirSync(dir);
@@ -28,7 +28,7 @@ class FileWorker {
             if (e.code !== "EEXIST")
                 throw e;
         }
-        jsonfile.writeFileSync(FileWorker._grammarFile, languageModel.corpus);
+        jsonfile.writeFileSync(FileWorker._grammarFile, grammar);
     }
     static readTextFile(filename) {
         return fs.readFileSync(filename).toString();

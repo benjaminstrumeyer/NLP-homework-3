@@ -3,11 +3,11 @@ const FileWorker_1 = require("../FileWorker");
 const PCFG_1 = require("../grammar/PCFG");
 class GrammarBuilder {
     static buildGrammar() {
-        var languageModel = GrammarBuilder.buildGrammarFromFile();
-        if (!languageModel) {
-            languageModel = GrammarBuilder.buildGrammarFromTrainingData();
+        var grammar = GrammarBuilder.buildGrammarFromFile();
+        if (!grammar) {
+            grammar = GrammarBuilder.buildGrammarFromTrainingData();
         }
-        return languageModel;
+        return grammar;
     }
     static buildGrammarFromTrainingData() {
         var trainingData = FileWorker_1.FileWorker.getTrainingTrees();
