@@ -1,10 +1,8 @@
-import {LanguageModelBuilder} from "../../core/builders/LanguageModelBuilder";
+import {GrammarBuilder} from "../../core/builders/GrammarBuilder";
 import {Preprocess} from "../../core/Preprocess";
 import {FileWorker} from "../../core/FileWorker";
 
 export class _HandlerBase
 {
-    public static languageModel = LanguageModelBuilder.buildLanguageModel();
-
-    public static testCorpus = FileWorker.getTestCorpus();
+    public static grammar = GrammarBuilder.buildGrammar();
 }

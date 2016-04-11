@@ -1,6 +1,6 @@
 import {TreeNode} from "./TreeNode";
 
-export class PCFG
+export class PCFGTree
 {
     public root:TreeNode;
 

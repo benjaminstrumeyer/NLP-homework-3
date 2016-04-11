@@ -1,4 +1,4 @@
-import {PCFG} from "../../core/models/PCFG";
+import {PCFGTree} from "../../core/models/PCFGTree";
 import {TreeNode} from "../../core/models/TreeNode";
 import {FileWorker} from "../../core/FileWorker";
 import {TreeParser} from "../../core/parsers/TreeParser";
@@ -16,7 +16,7 @@ export class TestHandler
             let parsed = TreeParser.parseTree(tree);
 
             if(parsed)
-                console.log(parsed.toString());
+                console.log(parsed);
         }
     }
 }
