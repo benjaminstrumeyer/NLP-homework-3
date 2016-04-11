@@ -1,52 +1,49 @@
 import {FileWorker} from "../FileWorker";
+import {PCFG} from "../grammar/PCFG";
 
-export class LanguageModelBuilder
+export class GrammarBuilder
 {
-    public static buildLanguageModel()
+    public static buildGrammar():PCFG
     {
         // Try to read from file, otherwise build from training data
-        var languageModel = LanguageModelBuilder.buildLanguageModelFromFile();
+        var languageModel = GrammarBuilder.buildGrammarFromFile();
         if (!languageModel)
         {
             // Build from training data
-            languageModel = LanguageModelBuilder.buildLanguageModelFromTrainingData();
+            languageModel = GrammarBuilder.buildGrammarFromTrainingData();
         }
 
         return languageModel;
     }
 
-    public static buildLanguageModelFromTrainingData()
+    public static buildGrammarFromTrainingData():PCFG
     {
         // Get training data
-        var trainingData = FileWorker.getTrainingCorpus();
+        var trainingData = FileWorker.getTrainingTrees();
 
         // Train language model with training data
-        var languageModel = new LanguageModel();
-        languageModel.train(trainingData);
+        var grammar = new PCFG();
+        grammar.train(trainingData);
 
         // Write the built model to file
-        FileWorker.writeLanguageModelFile(languageModel);
+        FileWorker.writeGrammarFile(grammar);
 
-        console.log("\nLanguage Model built and written to file!\n");
+        console.log("\nGrammar built and written to file!\n");
 
-        return languageModel;
+        return grammar;
     }
 
-    public static buildLanguageModelFromFile()
+    public static buildGrammarFromFile():PCFG
     {
         // Try to read from the language model file, return null if file not found
-        var corpus = FileWorker.readLanguageModelFile();
-        if (!corpus)
+        var grammar = FileWorker.readGrammarFile();
+        if (!grammar)
         {
             return null;
         }
 
-        var languageModel = new LanguageModel();
-        languageModel.corpus = corpus;
-        languageModel.instantiateMethods();
+        console.log("\nGrammar successfully read from file!\n");
 
-        console.log("\nLanguage Model successfully read from file!\n");
-
-        return languageModel;
+        return grammar;
     }
 }

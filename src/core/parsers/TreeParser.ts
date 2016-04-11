@@ -1,9 +1,9 @@
-import {PCFG} from "../models/PCFG";
+import {PCFGTree} from "../models/PCFGTree";
 import {TreeNode} from "../models/TreeNode";
 
 export class TreeParser
 {
-    public static parseTree(tree:string):PCFG
+    public static parseTree(tree:string):PCFGTree
     {
         // If tree is null or white space, then can't parse it man
         if(!tree || (/^\s+$/g).test(tree))
@@ -12,7 +12,7 @@ export class TreeParser
         // Otherwise go parse that motherfucker
         var nodeName = "";
         var currentNode:TreeNode;
-        var pcfgTree = new PCFG();
+        var pcfgTree = new PCFGTree();
 
         for (let i = 0; i < tree.length; i++)
         {

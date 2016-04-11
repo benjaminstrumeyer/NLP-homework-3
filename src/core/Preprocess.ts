@@ -1,5 +1,3 @@
-import {WordTagPair} from "./models/TreeNode";
-
 export class Preprocess
 {
     public static tokenizeCorpus(corpus:string):string[]

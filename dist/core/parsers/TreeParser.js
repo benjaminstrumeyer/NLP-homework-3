@@ -1,5 +1,5 @@
 "use strict";
-const PCFG_1 = require("../models/PCFG");
+const PCFGTree_1 = require("../models/PCFGTree");
 const TreeNode_1 = require("../models/TreeNode");
 class TreeParser {
     static parseTree(tree) {
@@ -7,7 +7,7 @@ class TreeParser {
             return null;
         var nodeName = "";
         var currentNode;
-        var pcfgTree = new PCFG_1.PCFG();
+        var pcfgTree = new PCFGTree_1.PCFGTree();
         for (let i = 0; i < tree.length; i++) {
             let currentChar = tree[i];
             if (currentChar === " ")

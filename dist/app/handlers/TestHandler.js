@@ -8,7 +8,7 @@ class TestHandler {
         for (let tree of trees) {
             let parsed = TreeParser_1.TreeParser.parseTree(tree);
             if (parsed)
-                console.log(parsed.toString());
+                console.log(parsed);
         }
     }
 }

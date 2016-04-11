@@ -4,23 +4,23 @@ import jsonfile = require("jsonfile");
 
 export class FileWorker
 {
-    private static _languageModelFile = "./output/language_model.json";
+    private static _grammarFile = "./output/grammar.json";
 
-    public static getTestCorpus():string
+    public static getTestTrees():string
     {
-        return fs.readFileSync("./data/test.txt").toString();
+        return fs.readFileSync("./data/test.trees").toString();
     }
 
-    public static getTrainingCorpus():string
+    public static getTrainingTrees():string
     {
-        return fs.readFileSync("./data/train.txt").toString();
+        return fs.readFileSync("./data/train.trees").toString();
     }
 
-    public static readLanguageModelFile()
+    public static readGrammarFile()
     {
         try
         {
-            return jsonfile.readFileSync(FileWorker._languageModelFile, {throws: false});
+            return jsonfile.readFileSync(FileWorker._grammarFile, {throws: false});
         }
         catch (e)
         {
@@ -30,12 +30,12 @@ export class FileWorker
         }
     }
 
-    public static writeLanguageModelFile(languageModel)
+    public static writeGrammarFile(languageModel)
     {
         // Create directory for language model file
         try
         {
-            var dir = path.parse(FileWorker._languageModelFile).dir;
+            var dir = path.parse(FileWorker._grammarFile).dir;
             fs.mkdirSync(dir);
         }
         catch (e)
@@ -44,7 +44,7 @@ export class FileWorker
         }
 
         // Write the language model file
-        jsonfile.writeFileSync(FileWorker._languageModelFile, languageModel.corpus);
+        jsonfile.writeFileSync(FileWorker._grammarFile, languageModel.corpus);
     }
 
     public static readTextFile(filename:string):string
