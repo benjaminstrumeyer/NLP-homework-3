@@ -2,7 +2,7 @@
 class CommandLineHandler {
     static printWelcomeText() {
         console.log();
-        console.log("Welcome to the Parts of Speech Tagger playground for CSE 390");
+        console.log("Welcome to the Syntactic Parsing playground for CSE 390");
         console.log("---------------------------------------------------------");
     }
     static printHelpText() {

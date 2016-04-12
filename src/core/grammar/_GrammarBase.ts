@@ -1,3 +1,5 @@
+import _ = require("lodash");
+
 import {GrammarRule} from "../models/GrammarRule";
 import {TreeParser} from "../parsers/TreeParser";
 import {PCFGTree} from "../models/PCFGTree";
@@ -12,13 +14,30 @@ export abstract class _GrammarBase
     {
         var treeLines = Preprocess.getTreeLines(unparsedTrees);
 
+        var allRules = [];
         for (let tree of treeLines)
         {
             let parsedTree = TreeParser.parseTree(tree);
             let rules = this.convertTreeToRules(parsedTree);
 
-            this.rules = (this.rules || []).concat(rules);
+            allRules = allRules.concat(rules);
         }
+
+        // Get the unique rules from the parsed rules
+        var uniqueRules = _.uniqWith(allRules, (x, y) =>
+        {
+            var isEqual = x.isEqual(y);
+            
+            if(isEqual)
+            {
+                x.observationCount++;
+                y.observationCount++;
+            }
+
+            return isEqual;
+        });
+
+        this.rules = uniqueRules;
 
         console.log(this.rules.map(x => x.toString()));
     }
@@ -32,7 +51,7 @@ export abstract class _GrammarBase
 
     private parseTreeNodes(node:TreeNode):GrammarRule[]
     {
-        if(node.isTerminal())
+        if (node.isTerminal())
             return [];
 
         var rules:GrammarRule[] = [];

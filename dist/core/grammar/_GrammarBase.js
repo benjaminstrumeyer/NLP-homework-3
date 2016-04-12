@@ -1,15 +1,26 @@
 "use strict";
+const _ = require("lodash");
 const GrammarRule_1 = require("../models/GrammarRule");
 const TreeParser_1 = require("../parsers/TreeParser");
 const Preprocess_1 = require("../Preprocess");
 class _GrammarBase {
     train(unparsedTrees) {
         var treeLines = Preprocess_1.Preprocess.getTreeLines(unparsedTrees);
+        var allRules = [];
         for (let tree of treeLines) {
             let parsedTree = TreeParser_1.TreeParser.parseTree(tree);
             let rules = this.convertTreeToRules(parsedTree);
-            this.rules = (this.rules || []).concat(rules);
+            allRules = allRules.concat(rules);
         }
+        var uniqueRules = _.uniqWith(allRules, (x, y) => {
+            var isEqual = x.isEqual(y);
+            if (isEqual) {
+                x.observationCount++;
+                y.observationCount++;
+            }
+            return isEqual;
+        });
+        this.rules = uniqueRules;
         console.log(this.rules.map(x => x.toString()));
     }
     convertTreeToRules(tree) {
