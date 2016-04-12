@@ -17,7 +17,7 @@ export class GrammarRule
 
     public toString():string
     {
-        return `(${this.observationCount})\t ${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+        return `(${this.observationCount})\t${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
     }
 
     public isEqual(otherRule:GrammarRule):boolean

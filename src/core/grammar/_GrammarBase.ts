@@ -39,7 +39,12 @@ export abstract class _GrammarBase
 
         this.rules = uniqueRules;
 
-        console.log(this.rules.map(x => x.toString()));
+        console.log(
+            this.rules
+                .sort((x,y) => y.observationCount - x.observationCount)
+                .map(x => x.toString())
+                .reduce((x,y) => x+"\n"+y)
+        );
     }
 
     private convertTreeToRules(tree:PCFGTree):GrammarRule[]

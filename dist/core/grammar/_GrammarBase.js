@@ -21,7 +21,10 @@ class _GrammarBase {
             return isEqual;
         });
         this.rules = uniqueRules;
-        console.log(this.rules.map(x => x.toString()));
+        console.log(this.rules
+            .sort((x, y) => y.observationCount - x.observationCount)
+            .map(x => x.toString())
+            .reduce((x, y) => x + "\n" + y));
     }
     convertTreeToRules(tree) {
         var root = tree.root;

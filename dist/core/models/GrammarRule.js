@@ -7,7 +7,7 @@ class GrammarRule {
         this.observationCount = 1;
     }
     toString() {
-        return `(${this.observationCount})\t ${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+        return `(${this.observationCount})\t${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
     }
     isEqual(otherRule) {
         return (this.left === otherRule.left) &&
