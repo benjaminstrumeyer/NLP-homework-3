@@ -3,16 +3,11 @@ import {GrammarRule} from "../models/GrammarRule";
 
 export class LaplaceSmoothingMethod extends _EstimationMethod
 {
-    private totalCount:number;
     private distinctCount:number;
 
     constructor(rules)
     {
         super(rules);
-
-        this.totalCount = this.rules
-            .map(x => x.observationCount)
-            .reduce((x,y) => x + y);
 
         this.distinctCount = this.rules.length;
     }
@@ -23,6 +18,11 @@ export class LaplaceSmoothingMethod extends _EstimationMethod
     {
         var ruleCount = rule.observationCount;
 
-        return (ruleCount + this.k) / (this.totalCount + this.distinctCount + this.k);
+        var leftCount = this.rules
+            .filter(x => x.left === rule.left)
+            .map(x => x.observationCount)
+            .reduce((x, y) => x + y);
+
+        return (ruleCount + this.k) / (leftCount + this.distinctCount + this.k);
     }
 }

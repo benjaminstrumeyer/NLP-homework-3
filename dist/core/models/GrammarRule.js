@@ -6,6 +6,12 @@ class GrammarRule {
         this.right = right;
         this.observationCount = 1;
     }
+    isBinary() {
+        return this.right.length === 2;
+    }
+    isUnary() {
+        return this.right.length === 1;
+    }
     toString() {
         var ruleString = `${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
         return `(${this.observationCount})\t${ruleString}\t\t\t${this.probability}`;
