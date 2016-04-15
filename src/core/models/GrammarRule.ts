@@ -16,6 +16,16 @@ export class GrammarRule
         this.observationCount = 1;
     }
 
+    public isBinary():boolean
+    {
+        return this.right.length === 2;
+    }
+
+    public isUnary():boolean
+    {
+        return this.right.length === 1;
+    }
+
     public toString():string
     {
         var ruleString = `${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
