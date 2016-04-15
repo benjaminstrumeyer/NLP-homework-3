@@ -1,6 +1,8 @@
 "use strict";
 const readlineSync = require("readline-sync");
 const CommandLineHandler_1 = require("./handlers/CommandLineHandler");
+const GrammarHandler_1 = require("./handlers/GrammarHandler");
+const TestHandler_1 = require("./handlers/TestHandler");
 class Application {
     static run() {
         var readline = readlineSync;
@@ -8,6 +10,8 @@ class Application {
         CommandLineHandler_1.CommandLineHandler.printHelpText();
         readline.promptCLLoop({
             help: CommandLineHandler_1.CommandLineHandler.printHelpText,
+            test: TestHandler_1.TestHandler.testTreePrint,
+            rebuild: GrammarHandler_1.GrammarHandler.rebuild,
             exit: Application.exit
         });
     }

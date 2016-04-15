@@ -1,8 +1,6 @@
 "use strict";
-const LanguageModelBuilder_1 = require("../../core/builders/LanguageModelBuilder");
-const FileWorker_1 = require("../../core/FileWorker");
+const GrammarBuilder_1 = require("../../core/builders/GrammarBuilder");
 class _HandlerBase {
 }
-_HandlerBase.languageModel = LanguageModelBuilder_1.LanguageModelBuilder.buildLanguageModel();
-_HandlerBase.testCorpus = FileWorker_1.FileWorker.getTestCorpus();
+_HandlerBase.grammar = GrammarBuilder_1.GrammarBuilder.buildGrammar();
 exports._HandlerBase = _HandlerBase;

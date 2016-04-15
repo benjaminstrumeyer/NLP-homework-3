@@ -1,7 +1,7 @@
 "use strict";
 class _EstimationMethod {
-    constructor(corpus) {
-        this.corpus = corpus;
+    constructor(rules) {
+        this.rules = rules;
     }
 }
 exports._EstimationMethod = _EstimationMethod;

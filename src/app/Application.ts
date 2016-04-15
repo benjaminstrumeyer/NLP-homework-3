@@ -1,7 +1,8 @@
 import readlineSync = require("readline-sync");
 
 import {CommandLineHandler} from "./handlers/CommandLineHandler";
-import {LanguageModelHandler} from "./handlers/LanguageModelHandler";
+import {GrammarHandler} from "./handlers/GrammarHandler";
+import {TestHandler} from "./handlers/TestHandler";
 
 export class Application
 {
@@ -19,6 +20,9 @@ export class Application
         readline.promptCLLoop(
             {
                 help: CommandLineHandler.printHelpText,
+
+                test: TestHandler.testTreePrint,
+                rebuild: GrammarHandler.rebuild,
 
                 exit: Application.exit
             });

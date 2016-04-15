@@ -3,15 +3,15 @@ const fs = require("fs");
 const path = require("path");
 const jsonfile = require("jsonfile");
 class FileWorker {
-    static getTestCorpus() {
-        return fs.readFileSync("./data/test.txt").toString();
+    static getTestTrees() {
+        return fs.readFileSync("./data/test.trees").toString();
     }
-    static getTrainingCorpus() {
-        return fs.readFileSync("./data/train.txt").toString();
+    static getTrainingTrees() {
+        return fs.readFileSync("./data/train.trees").toString();
     }
-    static readLanguageModelFile() {
+    static readGrammarFile() {
         try {
-            return jsonfile.readFileSync(FileWorker._languageModelFile, { throws: false });
+            return jsonfile.readFileSync(FileWorker._grammarFile, { throws: false });
         }
         catch (e) {
             if (e.code !== "ENOENT")
@@ -19,16 +19,19 @@ class FileWorker {
             return null;
         }
     }
-    static writeLanguageModelFile(languageModel) {
+    static writeGrammarFile(grammar) {
         try {
-            var dir = path.parse(FileWorker._languageModelFile).dir;
+            var dir = path.parse(FileWorker._grammarFile).dir;
             fs.mkdirSync(dir);
         }
         catch (e) {
             if (e.code !== "EEXIST")
                 throw e;
         }
-        jsonfile.writeFileSync(FileWorker._languageModelFile, languageModel.corpus);
+        jsonfile.writeFileSync(FileWorker._grammarFile, grammar);
+    }
+    static readTextFile(filename) {
+        return fs.readFileSync(filename).toString();
     }
     static writeTextFile(filename, data) {
         try {
@@ -53,5 +56,5 @@ class FileWorker {
         jsonfile.writeFileSync(filename, data);
     }
 }
-FileWorker._languageModelFile = "./output/language_model.json";
+FileWorker._grammarFile = "./output/grammar.json";
 exports.FileWorker = FileWorker;
