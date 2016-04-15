@@ -44,13 +44,11 @@ class _GrammarBase {
             return [];
         var rules = [];
         var left = node.data;
-        var rights = node.children.map(child => child.data);
-        for (let right of rights) {
-            rules.push(new GrammarRule_1.GrammarRule(left, right));
-        }
+        var right = node.children.map(child => child.data);
+        rules.push(new GrammarRule_1.GrammarRule(left, right));
         var childrenRules = node.children
             .map(child => this.parseTreeNodes(child))
-            .reduce((x, y) => x.concat(y));
+            .reduce((left, right) => left.concat(right));
         return rules.concat(childrenRules);
     }
 }
