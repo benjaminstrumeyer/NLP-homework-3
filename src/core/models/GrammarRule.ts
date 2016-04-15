@@ -20,7 +20,7 @@ export class GrammarRule
     {
         var ruleString = `${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
 
-        return `(${this.observationCount})\t${ruleString}`;
+        return `(${this.observationCount})\t${ruleString}\t\t\t${this.probability}`;
     }
 
     public equals(otherRule:GrammarRule):boolean

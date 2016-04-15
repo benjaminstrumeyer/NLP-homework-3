@@ -13,7 +13,11 @@ export class LaplaceSmoothingMethod extends _EstimationMethod
     public computeProbability(rule:GrammarRule):number
     {
         var ruleCount = rule.observationCount;
-        var totalCount = this.rules.reduce((x,y) => x + y.observationCount);
+
+        var totalCount = this.rules
+            .map(x => x.observationCount)
+            .reduce((x,y) => x + y);
+
         var distinctCount = this.rules.length;
 
         return (ruleCount + this.k) / (totalCount + distinctCount + this.k);
