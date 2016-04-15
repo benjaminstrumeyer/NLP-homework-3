@@ -77,13 +77,16 @@ export abstract class _GrammarBase
         var rules:GrammarRule[] = [];
 
         var left = node.data;
-        var right = node.children.map(child => child.data);
+        var rights = node.children.map(child => child.data);
 
-        rules.push(new GrammarRule(left, right));
+        for (let right of rights)
+        {
+            rules.push(new GrammarRule(left, right));
+        }
 
         var childrenRules = node.children
             .map(child => this.parseTreeNodes(child))
-            .reduce((left, right) => left.concat(right));
+            .reduce((x, y) => x.concat(y));
 
         return rules.concat(childrenRules);
     }
