@@ -5,6 +5,7 @@ import {TreeParser} from "../parsers/TreeParser";
 import {PCFGTree} from "../models/PCFGTree";
 import {TreeNode} from "../models/TreeNode";
 import {Preprocess} from "../Preprocess";
+import {LaplaceSmoothingMethod} from "../methods/LaplaceSmoothingMethod";
 
 export abstract class _GrammarBase
 {
@@ -39,12 +40,26 @@ export abstract class _GrammarBase
 
         this.rules = uniqueRules;
 
+        // Compute the probabilities
+        this.computeProbabilitiesOfRules();
+
         console.log(
             this.rules
                 .sort((x,y) => y.observationCount - x.observationCount)
                 .map(x => x.toString())
                 .reduce((x,y) => x+"\n"+y)
         );
+    }
+    
+    private computeProbabilitiesOfRules()
+    {
+        var rules = this.rules;
+        var laplaceMethod = new LaplaceSmoothingMethod(rules);
+
+        for (let rule of rules)
+        {
+            rule.probability = laplaceMethod.computeProbability(rule);
+        }
     }
 
     private convertTreeToRules(tree:PCFGTree):GrammarRule[]

@@ -6,6 +6,7 @@ export class GrammarRule
     public right:string[];
 
     public observationCount:number;
+    public probability:number;
 
     constructor(left:string, right:string[])
     {

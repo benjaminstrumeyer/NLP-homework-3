@@ -3,6 +3,7 @@ const _ = require("lodash");
 const GrammarRule_1 = require("../models/GrammarRule");
 const TreeParser_1 = require("../parsers/TreeParser");
 const Preprocess_1 = require("../Preprocess");
+const LaplaceSmoothingMethod_1 = require("../methods/LaplaceSmoothingMethod");
 class _GrammarBase {
     train(unparsedTrees) {
         var treeLines = Preprocess_1.Preprocess.getTreeLines(unparsedTrees);
@@ -21,10 +22,18 @@ class _GrammarBase {
             return isEqual;
         });
         this.rules = uniqueRules;
+        this.computeProbabilitiesOfRules();
         console.log(this.rules
             .sort((x, y) => y.observationCount - x.observationCount)
             .map(x => x.toString())
             .reduce((x, y) => x + "\n" + y));
+    }
+    computeProbabilitiesOfRules() {
+        var rules = this.rules;
+        var laplaceMethod = new LaplaceSmoothingMethod_1.LaplaceSmoothingMethod(rules);
+        for (let rule of rules) {
+            rule.probability = laplaceMethod.computeProbability(rule);
+        }
     }
     convertTreeToRules(tree) {
         var root = tree.root;
