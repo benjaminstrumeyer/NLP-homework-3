@@ -4,14 +4,14 @@ class LaplaceSmoothingMethod extends _EstimationMethod_1._EstimationMethod {
     constructor(rules) {
         super(rules);
         this.k = 1;
+        this.totalCount = this.rules
+            .map(x => x.observationCount)
+            .reduce((x, y) => x + y);
+        this.distinctCount = this.rules.length;
     }
     computeProbability(rule) {
         var ruleCount = rule.observationCount;
-        var totalCount = this.rules
-            .map(x => x.observationCount)
-            .reduce((x, y) => x + y);
-        var distinctCount = this.rules.length;
-        return (ruleCount + this.k) / (totalCount + distinctCount + this.k);
+        return (ruleCount + this.k) / (this.totalCount + this.distinctCount + this.k);
     }
 }
 exports.LaplaceSmoothingMethod = LaplaceSmoothingMethod;
