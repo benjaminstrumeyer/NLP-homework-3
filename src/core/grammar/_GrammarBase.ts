@@ -26,7 +26,7 @@ export abstract class _GrammarBase
         // Get the unique rules from the parsed rules
         var uniqueRules = _.uniqWith(allRules, (x, y) =>
         {
-            var isEqual = x.isEqual(y);
+            var isEqual = x.equals(y);
             
             if(isEqual)
             {

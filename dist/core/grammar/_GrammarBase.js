@@ -13,7 +13,7 @@ class _GrammarBase {
             allRules = allRules.concat(rules);
         }
         var uniqueRules = _.uniqWith(allRules, (x, y) => {
-            var isEqual = x.isEqual(y);
+            var isEqual = x.equals(y);
             if (isEqual) {
                 x.observationCount++;
                 y.observationCount++;

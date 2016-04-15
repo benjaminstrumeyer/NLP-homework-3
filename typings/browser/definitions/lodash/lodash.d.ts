@@ -10901,7 +10901,7 @@ module _ {
 
     interface LoDashImplicitWrapperBase<T, TWrapper> {
         /**
-         * @see _.isEqual
+         * @see _.equals
          */
         eq(
             other: any
@@ -10910,7 +10910,7 @@ module _ {
 
     interface LoDashExplicitWrapperBase<T, TWrapper> {
         /**
-         * @see _.isEqual
+         * @see _.equals
          */
         eq(
             other: any
@@ -11300,7 +11300,7 @@ module _ {
 
     interface LoDashImplicitWrapperBase<T, TWrapper> {
         /**
-         * @see _.isEqual
+         * @see _.equals
          */
         isEqual(
             other: any
@@ -11309,7 +11309,7 @@ module _ {
 
     interface LoDashExplicitWrapperBase<T, TWrapper> {
         /**
-         * @see _.isEqual
+         * @see _.equals
          */
         isEqual(
             other: any

@@ -17,10 +17,12 @@ export class GrammarRule
 
     public toString():string
     {
-        return `(${this.observationCount})\t${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+        var ruleString = `${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+
+        return `(${this.observationCount})\t${ruleString}`;
     }
 
-    public isEqual(otherRule:GrammarRule):boolean
+    public equals(otherRule:GrammarRule):boolean
     {
         return (this.left === otherRule.left) &&
             _.isEqual(this.right.sort(), otherRule.right.sort());

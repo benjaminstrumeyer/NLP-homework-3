@@ -7,9 +7,10 @@ class GrammarRule {
         this.observationCount = 1;
     }
     toString() {
-        return `(${this.observationCount})\t${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+        var ruleString = `${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+        return `(${this.observationCount})\t${ruleString}`;
     }
-    isEqual(otherRule) {
+    equals(otherRule) {
         return (this.left === otherRule.left) &&
             _.isEqual(this.right.sort(), otherRule.right.sort());
     }
