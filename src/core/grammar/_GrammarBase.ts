@@ -28,7 +28,7 @@ export abstract class _GrammarBase
         var uniqueRules = _.uniqWith(allRules, (x, y) =>
         {
             var isEqual = x.equals(y);
-            
+
             if(isEqual)
             {
                 x.observationCount++;
@@ -47,10 +47,10 @@ export abstract class _GrammarBase
             this.rules
                 .sort((x,y) => y.observationCount - x.observationCount)
                 .map(x => x.toString())
-                .reduce((x,y) => x+"\n"+y)
+                .reduce((x,y) => x + "\n" + y)
         );
     }
-    
+
     private computeProbabilitiesOfRules()
     {
         var rules = this.rules;
