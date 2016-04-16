@@ -1,23 +1,26 @@
-
 import {PCFG} from "../grammar/PCFG";
 import {NonTerminalTuple} from "../models/NonTerminalTuple";
 
 
-export class CKYParser {
+export class CKYParser
+{
 
-    private grammar: PCFG;
+    private grammar:PCFG;
     private table:NonTerminalTuple[][][];
 
 
-    constructor(grammar:PCFG) {
+    constructor(grammar:PCFG)
+    {
         this.grammar = grammar;
     }
 
-    public parse(sequence: string) {
+    public parse(sequence:string)
+    {
         var words = sequence.split(/\s+/g);
 
         //This is the diagonal initializing loop
-        for (let i = 0; i < words.length; i++) {
+        for (let i = 0; i < words.length; i++)
+        {
 
             // Find all the rules that have the right hand side as the word i.
             let word = words[i];
@@ -28,10 +31,27 @@ export class CKYParser {
             this.table[i][i] = tuples;
         }
 
+        for (let j = 0; j < words.length; j++)
+        {
+            for (let i = j - 1; i >= 0; i--)
+            {
 
+
+            }
+        }
     }
 
-    private findLHSForNonTerminal(word:string):NonTerminalTuple[] {
+    private processTableCell(i:number, j:number)
+    {
+        for(let k = 0; k < j; k++)
+        {
+            let left = this.table[i][k];
+            let right = this.table[i+k][j];
+        }
+    }
+
+    private findLHSForNonTerminal(word:string):NonTerminalTuple[]
+    {
         var rules = this.grammar.rules;
 
         var matchingRules = rules
