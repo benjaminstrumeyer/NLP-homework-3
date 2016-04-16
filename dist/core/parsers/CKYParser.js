@@ -1,5 +1,5 @@
 "use strict";
-const NonTerminalTuple_1 = require("../models/NonTerminalTuple");
+const CKYCell_1 = require("../models/CKYCell");
 class CKYParser {
     constructor(grammar) {
         this.grammar = grammar;
@@ -8,8 +8,8 @@ class CKYParser {
         var words = sequence.split(/\s+/g);
         for (let i = 0; i < words.length; i++) {
             let word = words[i];
-            let tuples = this.findLHSForNonTerminal(word);
-            this.table[i][i] = tuples;
+            let cell = this.findLHSForTerminal(word);
+            this.table[i][i] = cell;
         }
         for (let j = 0; j < words.length; j++) {
             for (let i = j - 1; i >= 0; i--) {
@@ -17,23 +17,20 @@ class CKYParser {
         }
     }
     processTableCell(i, j) {
-        for (let k = 0; k < j; k++) {
-            let left = this.table[i][k];
-            let right = this.table[i + k][j];
+        var table = this.table;
+        var currentCell = table[i][j];
+        for (let k = 0; k < j - i; k++) {
+            let left = table[i][i + k];
+            let right = table[i + 1 + k][j];
         }
     }
-    findLHSForNonTerminal(word) {
+    findLHSForTerminal(word) {
         var rules = this.grammar.rules;
         var matchingRules = rules
             .filter(rule => rule.isUnary() && rule.right[0] === word);
-        var tuples = matchingRules
-            .map(rule => {
-            let t = new NonTerminalTuple_1.NonTerminalTuple();
-            t.nonTerminal = rule.left;
-            t.score = rule.probability;
-            return t;
-        });
-        return tuples;
+        var parses = matchingRules
+            .map(rule => new CKYCell_1.PossibleParse(rule.left, rule.probability));
+        return new CKYCell_1.CKYCell(parses);
     }
 }
 exports.CKYParser = CKYParser;

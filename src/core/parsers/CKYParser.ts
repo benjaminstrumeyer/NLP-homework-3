@@ -1,13 +1,10 @@
 import {PCFG} from "../grammar/PCFG";
-import {NonTerminalTuple} from "../models/NonTerminalTuple";
-
+import {CKYCell, PossibleParse} from "../models/CKYCell";
 
 export class CKYParser
 {
-
     private grammar:PCFG;
-    private table:NonTerminalTuple[][][];
-
+    private table:CKYCell[][];
 
     constructor(grammar:PCFG)
     {
@@ -18,24 +15,24 @@ export class CKYParser
     {
         var words = sequence.split(/\s+/g);
 
-        //This is the diagonal initializing loop
+        // This is the diagonal initializing loop
         for (let i = 0; i < words.length; i++)
         {
-
             // Find all the rules that have the right hand side as the word i.
             let word = words[i];
 
             // Find all the rules in the grammar with word on the right side.
-            let tuples = this.findLHSForNonTerminal(word);
+            let cell = this.findLHSForTerminal(word);
 
-            this.table[i][i] = tuples;
+            this.table[i][i] = cell;
         }
 
+        // Let's fill up every other cell
         for (let j = 0; j < words.length; j++)
         {
             for (let i = j - 1; i >= 0; i--)
             {
-
+                
 
             }
         }
@@ -43,30 +40,26 @@ export class CKYParser
 
     private processTableCell(i:number, j:number)
     {
-        for(let k = 0; k < j; k++)
+        var table = this.table;
+        var currentCell = table[i][j];
+        
+        for (let k = 0; k < j - i; k++)
         {
-            let left = this.table[i][k];
-            let right = this.table[i+k][j];
+            let left = table[i][i + k];
+            let right = table[i + 1 + k][j];
         }
     }
 
-    private findLHSForNonTerminal(word:string):NonTerminalTuple[]
+    private findLHSForTerminal(word:string):CKYCell
     {
         var rules = this.grammar.rules;
 
         var matchingRules = rules
             .filter(rule => rule.isUnary() && rule.right[0] === word);
 
-        var tuples = matchingRules
-            .map(rule =>
-            {
-                let t = new NonTerminalTuple();
-                t.nonTerminal = rule.left;
-                t.score = rule.probability;
+        var parses = matchingRules
+            .map(rule => new PossibleParse(rule.left, rule.probability));
 
-                return t;
-            });
-
-        return tuples;
+        return new CKYCell(parses);
     }
 }
