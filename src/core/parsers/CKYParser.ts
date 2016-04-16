@@ -34,14 +34,16 @@ export class CKYParser {
     private findLHSForNonTerminal(word:string):NonTerminalTuple[] {
         var rules = this.grammar.rules;
 
-        var matchingLefts = rules
+        var matchingRules = rules
             .filter(rule => rule.isUnary() && rule.right[0] === word);
 
-        var tuples = matchingLefts
-            .map(x =>
+        var tuples = matchingRules
+            .map(rule =>
             {
                 let t = new NonTerminalTuple();
-                t.nonTerminal = x;
+                t.nonTerminal = rule.left;
+                t.score = rule.probability;
+
                 return t;
             });
 
