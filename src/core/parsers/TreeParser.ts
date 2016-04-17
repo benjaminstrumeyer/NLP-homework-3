@@ -52,4 +52,31 @@ export class TreeParser
         return pcfgTree;
     }
 
+    public static deparseTree(tree:PCFGTree):string
+    {
+        return this.deparseTreeNode(tree.root);
+    }
+
+    private static deparseTreeNode(node:TreeNode):string
+    {
+        var result = node.data;
+
+        if(node.isTerminal())
+            return result;
+
+        result += "(";
+
+        var deparsedChildren = [];
+        for (let child of node.children)
+        {
+            deparsedChildren.push(this.deparseTreeNode(child));
+        }
+
+        result += deparsedChildren.join(" ");
+
+        result += ")";
+
+        return result;
+    }
+
 }

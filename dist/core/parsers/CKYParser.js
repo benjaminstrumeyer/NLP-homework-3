@@ -16,14 +16,15 @@ class CKYParser {
                 this.processTableCell(i, j);
             }
         }
+        return null;
     }
     processTableCell(i, j) {
         var table = this.table;
         var currentCell = table[i][j];
         var possibleParses = currentCell.parses;
-        for (let k = 0; k < j - i; k++) {
-            let rowCell = table[i][i + k];
-            let colCell = table[i + 1 + k][j];
+        for (let k = i; k < j; k++) {
+            let rowCell = table[i][k];
+            let colCell = table[k + 1][j];
             possibleParses.concat(this.findPossibleParses(rowCell, colCell));
         }
     }
@@ -32,10 +33,13 @@ class CKYParser {
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
                 var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var lhs = this.grammar.findRuleByRHS(rhs);
-                if (!lhs)
+                var rule = this.grammar.findRuleByRHS(rhs);
+                if (!rule)
                     continue;
-                possibleParses.push(new CKYCell_1.PossibleParse(lhs));
+                var possibleParse = new CKYCell_1.PossibleParse(rule.left);
+                var score = 0;
+                possibleParse.score = score;
+                possibleParses.push(possibleParse);
             }
         }
         return possibleParses;
