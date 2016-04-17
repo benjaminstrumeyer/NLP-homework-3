@@ -15,6 +15,10 @@ export class CKYParser
 
     public parse(sequence:string):PCFGTree
     {
+        // Empty the table out for every parse
+        this.table = [[]];
+
+        // Split sequence to words
         var words = sequence.split(/\s+/g);
 
         // This is the diagonal initializing loop
