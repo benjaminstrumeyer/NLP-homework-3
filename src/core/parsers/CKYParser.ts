@@ -53,11 +53,14 @@ export class CKYParser
             let colCell = table[k+1][j];
 
             // Here find all the possible parses that come from the row cells and col cells
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
+            possibleParses.concat(this.findPossibleParses(rowCell, colCell,i ,j ,k ,this.grammar));
+            // Might be k - 1
+
+
         }
     }
 
-    private findPossibleParses(rowCell:CKYCell, colCell:CKYCell):PossibleParse[]
+    private findPossibleParses(rowCell:CKYCell, colCell:CKYCell, i:number, j:number, k:number, grammar:PCFG):PossibleParse[]
     {
         var possibleParses = [];
 
@@ -68,19 +71,20 @@ export class CKYParser
             {
                 var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
                 var rule = this.grammar.findRuleByRHS(rhs);
-
                 // Skip if LHS was not found
                 if(!rule)
                     continue;
 
                 // If found, make a possible parse and add it
                 var possibleParse = new PossibleParse(rule.left);
-                var score = 0; // Compute score here
+                var score = this.table[i][j].scorePossibleParses(this.table, i, j, k, possibleParse, rule);
 
                 possibleParse.score = score;
                 possibleParses.push(possibleParse);
             }
         }
+
+        this.table[i][j].pruneNonOptimalParses(this.table, i, j);
 
         return possibleParses;
     }
