@@ -16,14 +16,14 @@ export class GrammarRule
         this.observationCount = 1;
     }
 
-    public isBinary():boolean
-    {
-        return this.right.length === 2;
-    }
-
     public isUnary():boolean
     {
         return this.right.length === 1;
+    }
+
+    public isBinary():boolean
+    {
+        return this.right.length === 2;
     }
 
     public toString():string
@@ -36,6 +36,6 @@ export class GrammarRule
     public equals(otherRule:GrammarRule):boolean
     {
         return (this.left === otherRule.left) &&
-            _.isEqual(this.right.sort(), otherRule.right.sort());
+            _.isEqual(this.right, otherRule.right);
     }
 }
