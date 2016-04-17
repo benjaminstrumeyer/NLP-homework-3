@@ -66,7 +66,7 @@ export class TreeParser
             var deparsedChildren = [];
             for (let child of node.children)
             {
-                deparsedChildren.push(this.deparseTreeNode(child));
+                deparsedChildren.push(deparseTreeNode(child));
             }
 
             result += deparsedChildren.join(" ");
