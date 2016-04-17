@@ -1,15 +1,14 @@
 "use strict";
+const _ = require("lodash");
 const _GrammarBase_1 = require("./_GrammarBase");
 class PCFG extends _GrammarBase_1._GrammarBase {
     findRuleByRHS(RHS) {
-        var matchedRule = null;
-        var rules = this.rules;
-        for (let i = 0; i < rules.length; i++) {
-            if (RHS === rules[i].right) {
-                matchedRule = rules[i];
+        for (let rule of this.rules) {
+            if (_.isEqual(RHS, rule.right)) {
+                return rule;
             }
         }
-        return matchedRule;
+        return null;
     }
 }
 exports.PCFG = PCFG;

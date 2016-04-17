@@ -1,5 +1,6 @@
 "use strict";
 const CKYCell_1 = require("../models/CKYCell");
+const MathHelper_1 = require("../helpers/MathHelper");
 class CKYParser {
     constructor(grammar) {
         this.grammar = grammar;
@@ -25,24 +26,27 @@ class CKYParser {
         for (let k = i; k < j; k++) {
             let rowCell = table[i][k];
             let colCell = table[k + 1][j];
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell, i, j, k, this.grammar));
+            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
         }
+        currentCell.pruneNonOptimalParses();
     }
-    findPossibleParses(rowCell, colCell, i, j, k, grammar) {
+    findPossibleParses(rowCell, colCell) {
         var possibleParses = [];
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
-                var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var rule = this.grammar.findRuleByRHS(rhs);
+                let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
+                let rule = this.grammar.findRuleByRHS(rhs);
                 if (!rule)
                     continue;
-                var possibleParse = new CKYCell_1.PossibleParse(rule.left);
-                var score = this.table[i][j].scorePossibleParses(this.table, i, j, k, possibleParse, rule);
-                possibleParse.score = score;
-                possibleParses.push(possibleParse);
+                let score = (() => {
+                    var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
+                    var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
+                    var probabilityRule = rule.probability;
+                    return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
+                })();
+                possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
             }
         }
-        this.table[i][j].pruneNonOptimalParses(this.table, i, j);
         return possibleParses;
     }
     initializeCell(word) {

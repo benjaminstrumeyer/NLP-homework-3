@@ -1,6 +1,7 @@
 import {PCFG} from "../grammar/PCFG";
 import {CKYCell, PossibleParse} from "../models/CKYCell";
 import {PCFGTree} from "../models/PCFGTree";
+import {MathHelper} from "../helpers/MathHelper";
 
 export class CKYParser
 {
@@ -53,14 +54,15 @@ export class CKYParser
             let colCell = table[k+1][j];
 
             // Here find all the possible parses that come from the row cells and col cells
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell,i ,j ,k ,this.grammar));
-            // Might be k - 1
-
-
+            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
         }
+
+        // After finding and scoring the possible parses
+        // Let's prune so we only have the optimal parses
+        currentCell.pruneNonOptimalParses();
     }
 
-    private findPossibleParses(rowCell:CKYCell, colCell:CKYCell, i:number, j:number, k:number, grammar:PCFG):PossibleParse[]
+    private findPossibleParses(rowCell:CKYCell, colCell:CKYCell):PossibleParse[]
     {
         var possibleParses = [];
 
@@ -69,22 +71,27 @@ export class CKYParser
         {
             for (let colParse of colCell.parses)
             {
-                var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var rule = this.grammar.findRuleByRHS(rhs);
+                let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
+                let rule = this.grammar.findRuleByRHS(rhs);
+
                 // Skip if LHS was not found
                 if(!rule)
                     continue;
 
-                // If found, make a possible parse and add it
-                var possibleParse = new PossibleParse(rule.left);
-                var score = this.table[i][j].scorePossibleParses(this.table, i, j, k, possibleParse, rule);
+                // If found, score the possible parse
+                let score = (() =>
+                {
+                    var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
+                    var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
+                    var probabilityRule = rule.probability;
 
-                possibleParse.score = score;
-                possibleParses.push(possibleParse);
+                    return MathHelper.doLogSum(rowScore, colScore, probabilityRule);
+                })();
+
+                // Add the parse
+                possibleParses.push(new PossibleParse(rule.left, score));
             }
         }
-
-        this.table[i][j].pruneNonOptimalParses(this.table, i, j);
 
         return possibleParses;
     }
