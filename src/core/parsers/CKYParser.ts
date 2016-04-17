@@ -1,5 +1,6 @@
 import {PCFG} from "../grammar/PCFG";
 import {CKYCell, PossibleParse} from "../models/CKYCell";
+import {PCFGTree} from "../models/PCFGTree";
 
 export class CKYParser
 {
@@ -11,7 +12,7 @@ export class CKYParser
         this.grammar = grammar;
     }
 
-    public parse(sequence:string)
+    public parse(sequence:string):PCFGTree
     {
         var words = sequence.split(/\s+/g);
 
@@ -35,6 +36,9 @@ export class CKYParser
                 this.processTableCell(i, j);
             }
         }
+                
+        // Gotta return the final parsed tree
+        return null;
     }
 
     private processTableCell(i:number, j:number)

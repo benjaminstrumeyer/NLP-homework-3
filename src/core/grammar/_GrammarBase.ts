@@ -13,7 +13,7 @@ export abstract class _GrammarBase
 
     public train(unparsedTrees:string)
     {
-        var treeLines = Preprocess.getTreeLines(unparsedTrees);
+        var treeLines = Preprocess.getLines(unparsedTrees);
 
         var allRules = [];
         for (let tree of treeLines)
