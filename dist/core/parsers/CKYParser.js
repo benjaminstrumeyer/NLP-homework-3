@@ -32,7 +32,7 @@ class CKYParser {
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
                 var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var lhs = this.grammar.findLHS(rhs);
+                var lhs = this.grammar.findRuleByRHS(rhs);
                 if (!lhs)
                     continue;
                 possibleParses.push(new CKYCell_1.PossibleParse(lhs));

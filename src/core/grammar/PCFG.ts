@@ -1,8 +1,9 @@
 import {_GrammarBase} from "./_GrammarBase";
+import {GrammarRule} from "../models/GrammarRule";
 
 export class PCFG extends _GrammarBase
 {
-    public findLHS(RHS:string[]):string
+    public findRuleByRHS(RHS:string[]):GrammarRule
     {
         // Find LHS given the RHS
         // Loop through this.rules
