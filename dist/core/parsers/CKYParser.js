@@ -8,7 +8,7 @@ class CKYParser {
         var words = sequence.split(/\s+/g);
         for (let i = 0; i < words.length; i++) {
             let word = words[i];
-            let cell = this.findLHSForTerminal(word);
+            let cell = this.initializeCell(word);
             this.table[i][i] = cell;
         }
         for (let j = 0; j < words.length; j++) {
@@ -40,7 +40,7 @@ class CKYParser {
         }
         return possibleParses;
     }
-    findLHSForTerminal(word) {
+    initializeCell(word) {
         var rules = this.grammar.rules;
         var matchingRules = rules
             .filter(rule => rule.isUnary() && rule.right[0] === word);

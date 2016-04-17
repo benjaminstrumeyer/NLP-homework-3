@@ -22,7 +22,7 @@ export class CKYParser
             let word = words[i];
 
             // Find all the rules in the grammar with word on the right side.
-            let cell = this.findLHSForTerminal(word);
+            let cell = this.initializeCell(word);
 
             this.table[i][i] = cell;
         }
@@ -77,7 +77,7 @@ export class CKYParser
         return possibleParses;
     }
 
-    private findLHSForTerminal(word:string):CKYCell
+    private initializeCell(word:string):CKYCell
     {
         var rules = this.grammar.rules;
 
