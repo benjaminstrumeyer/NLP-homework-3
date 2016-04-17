@@ -36,7 +36,7 @@ export class TreeParser
             else if (currentChar === ")")
             {
                 // If we saw a terminal and a right paren, then make that terminal a new node
-                if(nodeName)
+                if (nodeName)
                     new TreeNode(nodeName, currentNode);
 
                 // Go up the tree
@@ -50,6 +50,33 @@ export class TreeParser
         }
 
         return pcfgTree;
+    }
+
+    public static deparseTree(tree:PCFGTree):string
+    {
+        var deparseTreeNode = function (node:TreeNode):string
+        {
+            var result = node.data;
+
+            if (node.isTerminal())
+                return result;
+
+            result += "(";
+
+            var deparsedChildren = [];
+            for (let child of node.children)
+            {
+                deparsedChildren.push(deparseTreeNode(child));
+            }
+
+            result += deparsedChildren.join(" ");
+
+            result += ")";
+
+            return result;
+        };
+
+        return deparseTreeNode(tree.root);
     }
 
 }

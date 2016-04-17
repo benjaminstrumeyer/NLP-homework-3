@@ -30,5 +30,21 @@ class TreeParser {
         }
         return pcfgTree;
     }
+    static deparseTree(tree) {
+        var deparseTreeNode = function (node) {
+            var result = node.data;
+            if (node.isTerminal())
+                return result;
+            result += "(";
+            var deparsedChildren = [];
+            for (let child of node.children) {
+                deparsedChildren.push(deparseTreeNode(child));
+            }
+            result += deparsedChildren.join(" ");
+            result += ")";
+            return result;
+        };
+        return deparseTreeNode(tree.root);
+    }
 }
 exports.TreeParser = TreeParser;
