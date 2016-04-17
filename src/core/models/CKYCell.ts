@@ -66,13 +66,10 @@ export class CKYCell
         var scorek1j = this.getScoreByNonTerminal(table, i, j, rule.right[1]);
         var probabilityRule = rule.probability;
 
-        var logSumArray = [scoreik, scorek1j, probabilityRule];
-
         // I would like to compute the log sum here. Pls halp it won't let me import..
-        var logsum = doLogSum(logSumArray);
+        var logsum = MathHelper.doLogSum(scoreik, scorek1j, probabilityRule);
 
         return logsum; //The score for this PossibleParse
-
 
         // Not sure why you wrote a loop here. I might be misunderstanding, but
         // if rowParse and colParse in CKYParser refer to the two different possible parses arrays

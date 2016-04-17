@@ -16,28 +16,33 @@ class CKYParser {
                 this.processTableCell(i, j);
             }
         }
+        return null;
     }
     processTableCell(i, j) {
         var table = this.table;
         var currentCell = table[i][j];
         var possibleParses = currentCell.parses;
-        for (let k = 0; k < j - i; k++) {
-            let rowCell = table[i][i + k];
-            let colCell = table[i + 1 + k][j];
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
+        for (let k = i; k < j; k++) {
+            let rowCell = table[i][k];
+            let colCell = table[k + 1][j];
+            possibleParses.concat(this.findPossibleParses(rowCell, colCell, i, j, k, this.grammar));
         }
     }
-    findPossibleParses(rowCell, colCell) {
+    findPossibleParses(rowCell, colCell, i, j, k, grammar) {
         var possibleParses = [];
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
                 var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var lhs = this.grammar.findRuleByRHS(rhs);
-                if (!lhs)
+                var rule = this.grammar.findRuleByRHS(rhs);
+                if (!rule)
                     continue;
-                possibleParses.push(new CKYCell_1.PossibleParse(lhs));
+                var possibleParse = new CKYCell_1.PossibleParse(rule.left);
+                var score = this.table[i][j].scorePossibleParses(this.table, i, j, k, possibleParse, rule);
+                possibleParse.score = score;
+                possibleParses.push(possibleParse);
             }
         }
+        this.table[i][j].pruneNonOptimalParses(this.table, i, j);
         return possibleParses;
     }
     initializeCell(word) {

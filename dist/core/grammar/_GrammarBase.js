@@ -6,7 +6,7 @@ const Preprocess_1 = require("../Preprocess");
 const LaplaceSmoothingMethod_1 = require("../methods/LaplaceSmoothingMethod");
 class _GrammarBase {
     train(unparsedTrees) {
-        var treeLines = Preprocess_1.Preprocess.getTreeLines(unparsedTrees);
+        var treeLines = Preprocess_1.Preprocess.getLines(unparsedTrees);
         var allRules = [];
         for (let tree of treeLines) {
             let parsedTree = TreeParser_1.TreeParser.parseTree(tree);

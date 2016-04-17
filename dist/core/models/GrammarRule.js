@@ -6,11 +6,11 @@ class GrammarRule {
         this.right = right;
         this.observationCount = 1;
     }
-    isBinary() {
-        return this.right.length === 2;
-    }
     isUnary() {
         return this.right.length === 1;
+    }
+    isBinary() {
+        return this.right.length === 2;
     }
     toString() {
         var ruleString = `${this.left} => ${this.right.join(" ")}`;
@@ -18,7 +18,7 @@ class GrammarRule {
     }
     equals(otherRule) {
         return (this.left === otherRule.left) &&
-            _.isEqual(this.right.sort(), otherRule.right.sort());
+            _.isEqual(this.right, otherRule.right);
     }
 }
 exports.GrammarRule = GrammarRule;
