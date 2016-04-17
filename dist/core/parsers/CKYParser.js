@@ -13,16 +13,32 @@ class CKYParser {
         }
         for (let j = 0; j < words.length; j++) {
             for (let i = j - 1; i >= 0; i--) {
+                this.processTableCell(i, j);
             }
         }
     }
     processTableCell(i, j) {
         var table = this.table;
         var currentCell = table[i][j];
+        var possibleParses = currentCell.parses;
         for (let k = 0; k < j - i; k++) {
-            let left = table[i][i + k];
-            let right = table[i + 1 + k][j];
+            let rowCell = table[i][i + k];
+            let colCell = table[i + 1 + k][j];
+            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
         }
+    }
+    findPossibleParses(rowCell, colCell) {
+        var possibleParses = [];
+        for (let rowParse of rowCell.parses) {
+            for (let colParse of colCell.parses) {
+                var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
+                var lhs = this.grammar.findLHS(rhs);
+                if (!lhs)
+                    continue;
+                possibleParses.push(new CKYCell_1.PossibleParse(lhs));
+            }
+        }
+        return possibleParses;
     }
     findLHSForTerminal(word) {
         var rules = this.grammar.rules;

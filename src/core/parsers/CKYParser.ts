@@ -32,8 +32,7 @@ export class CKYParser
         {
             for (let i = j - 1; i >= 0; i--)
             {
-                
-
+                this.processTableCell(i, j);
             }
         }
     }
@@ -42,12 +41,40 @@ export class CKYParser
     {
         var table = this.table;
         var currentCell = table[i][j];
-        
+
+        var possibleParses = currentCell.parses;
         for (let k = 0; k < j - i; k++)
         {
-            let left = table[i][i + k];
-            let right = table[i + 1 + k][j];
+            let rowCell = table[i][i + k];
+            let colCell = table[i + 1 + k][j];
+
+            // Here find all the possible parses that come from the row cells and col cells
+            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
         }
+    }
+
+    public findPossibleParses(rowCell:CKYCell, colCell:CKYCell):PossibleParse[]
+    {
+        var possibleParses = [];
+
+        // Find all possible parses X, that has X -> rowCell.any() colCell.any()
+        for (let rowParse of rowCell.parses)
+        {
+            for (let colParse of colCell.parses)
+            {
+                var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
+                var lhs = this.grammar.findLHS(rhs);
+
+                // Skip if LHS was not found
+                if(!lhs)
+                    continue;
+
+                // If found, make a possible parse and add it
+                possibleParses.push(new PossibleParse(lhs));
+            }
+        }
+
+        return possibleParses;
     }
 
     private findLHSForTerminal(word:string):CKYCell

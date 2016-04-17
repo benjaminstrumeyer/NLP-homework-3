@@ -28,7 +28,7 @@ export class GrammarRule
 
     public toString():string
     {
-        var ruleString = `${this.left} => ${this.right.reduce((x, y) => x + " | " + y)}`;
+        var ruleString = `${this.left} => ${this.right.join(" ")}`;
 
         return `(${this.observationCount})\t${ruleString}\t\t\t${this.probability}`;
     }

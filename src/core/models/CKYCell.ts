@@ -6,8 +6,22 @@ export class CKYCell
     {
         this.parses = parses;
     }
-
-
+    
+    public pruneNonOptimalParses()
+    {
+        // Let's score the parses first
+        this.scorePossibleParses();
+        
+        // Delete parses that have non optimal scores
+    }
+    
+    public scorePossibleParses()
+    {
+        for (let parse of this.parses)
+        {
+            // Compute the score for this parse
+        }
+    }
 }
 
 export class PossibleParse
