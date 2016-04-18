@@ -13,8 +13,7 @@ class GrammarRule {
         return this.right.length === 2;
     }
     toString() {
-        var ruleString = `${this.left} => ${this.right.join(" ")}`;
-        return `(${this.observationCount})\t${ruleString}\t\t\t${this.probability}`;
+        return `${this.left} => ${this.right.join(" ")}`;
     }
     equals(otherRule) {
         return (this.left === otherRule.left) &&

@@ -8,12 +8,14 @@ class CKYCell {
         var possibleParses = this.parses;
         var optimalParses = [];
         for (let parse of possibleParses) {
-            let sortedParses = possibleParses
+            let optimalParse = possibleParses
                 .filter(p => p.nonTerminal === parse.nonTerminal)
-                .sort((left, right) => {
-                return right.score - left.score;
+                .reduce((left, right) => {
+                if (left.score >= right.score)
+                    return left;
+                return right;
             });
-            optimalParses.push(sortedParses[0]);
+            optimalParses.push(optimalParse);
         }
         var prunedOptimalParses = _.uniqWith(optimalParses, (x, y) => x.nonTerminal === y.nonTerminal);
         this.parses = prunedOptimalParses;

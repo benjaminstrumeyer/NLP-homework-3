@@ -23,10 +23,6 @@ class _GrammarBase {
         });
         this.rules = uniqueRules;
         this.computeProbabilitiesOfRules();
-        console.log(this.rules
-            .sort((x, y) => y.observationCount - x.observationCount)
-            .map(x => x.toString())
-            .reduce((x, y) => x + "\n" + y));
     }
     computeProbabilitiesOfRules() {
         var rules = this.rules;
