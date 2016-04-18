@@ -1,7 +1,7 @@
 "use strict";
 class CKYCell {
     constructor(parses) {
-        this.parses = parses;
+        this.parses = parses || [];
     }
     pruneNonOptimalParses() {
         var possibleParses = this.parses;
@@ -36,7 +36,7 @@ exports.CKYCell = CKYCell;
 class PossibleParse {
     constructor(nonTerminal, score) {
         this.nonTerminal = nonTerminal;
-        this.score = score;
+        this.score = score || 0;
     }
 }
 exports.PossibleParse = PossibleParse;

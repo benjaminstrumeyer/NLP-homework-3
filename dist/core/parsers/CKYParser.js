@@ -7,18 +7,23 @@ class CKYParser {
     }
     parse(sequence) {
         var words = sequence.trim().split(/\s+/g);
-        this.table = new Array(words.length).fill([]).map(x => []);
+        this.reinitializeTable(words.length);
         for (let i = 0; i < words.length; i++) {
             let word = words[i];
             let cell = this.initializeCell(word);
             this.table[i][i] = cell;
         }
-        for (let j = 0; j < words.length; j++) {
-            for (let i = j; i >= 0; i--) {
+        for (let j = 1; j < words.length; j++) {
+            for (let i = j - 1; i >= 0; i--) {
                 this.processTableCell(i, j);
             }
         }
         return this.table;
+    }
+    reinitializeTable(length) {
+        this.table = new Array(length).fill([])
+            .map(x => new Array(length).fill([])
+            .map(x => new CKYCell_1.CKYCell()));
     }
     processTableCell(i, j) {
         var table = this.table;
@@ -29,7 +34,6 @@ class CKYParser {
             let colCell = table[k + 1][j];
             possibleParses.concat(this.findPossibleParses(rowCell, colCell));
         }
-        currentCell.pruneNonOptimalParses();
     }
     findPossibleParses(rowCell, colCell) {
         var possibleParses = [];

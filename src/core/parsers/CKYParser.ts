@@ -19,7 +19,7 @@ export class CKYParser
         var words = sequence.trim().split(/\s+/g);
 
         // Empty the table out for every parse
-        this.table = new Array(words.length).fill([]).map(x => []);
+        this.reinitializeTable(words.length);
 
         // This is the diagonal initializing loop
         for (let i = 0; i < words.length; i++)
@@ -34,16 +34,23 @@ export class CKYParser
         }
 
         // Let's fill up every other cell
-        for (let j = 0; j < words.length; j++)
+        for (let j = 1; j < words.length; j++)
         {
-            for (let i = j; i >= 0; i--)
+            for (let i = j - 1; i >= 0; i--)
             {
                 this.processTableCell(i, j);
             }
         }
-                
+
         // Gotta return the final parsed tree
         return null;
+    }
+
+    private reinitializeTable(length)
+    {
+        this.table = new Array(length).fill([])
+            .map(x => new Array(length).fill([])
+                .map(x => new CKYCell()));
     }
 
     private processTableCell(i:number, j:number)
@@ -55,7 +62,7 @@ export class CKYParser
         for (let k = i; k < j; k++)
         {
             let rowCell = table[i][k];
-            let colCell = table[k+1][j];
+            let colCell = table[k + 1][j];
 
             // Here find all the possible parses that come from the row cells and col cells
             possibleParses.concat(this.findPossibleParses(rowCell, colCell));
@@ -79,7 +86,7 @@ export class CKYParser
                 let rule = this.grammar.findRuleByRHS(rhs);
 
                 // Skip if LHS was not found
-                if(!rule)
+                if (!rule)
                     continue;
 
                 // If found, score the possible parse

@@ -7,7 +7,7 @@ export class CKYCell
 
     constructor(parses?:PossibleParse[])
     {
-        this.parses = parses;
+        this.parses = parses || [];
     }
     
     public pruneNonOptimalParses()
@@ -55,7 +55,6 @@ export class CKYCell
 
         return matchingParse.score;
     }
-
 }
 
 export class PossibleParse
@@ -66,6 +65,6 @@ export class PossibleParse
     constructor(nonTerminal?:string, score?:number)
     {
         this.nonTerminal = nonTerminal;
-        this.score = score;
+        this.score = score || 0;
     }
 }
