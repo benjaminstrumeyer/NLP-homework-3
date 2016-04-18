@@ -20,14 +20,17 @@ export class CKYCell
         // Go through each parse and find the optimal parse with the highest score
         for (let parse of possibleParses)
         {
-            let sortedParses = possibleParses
+            let optimalParse = possibleParses
                 .filter(p => p.nonTerminal === parse.nonTerminal)
-                .sort((left, right) =>
+                .reduce((left, right) =>
                 {
-                    return right.score - left.score;
+                    if(left.score >= right.score)
+                        return left;
+
+                    return right;
                 });
 
-            optimalParses.push(sortedParses[0]);
+            optimalParses.push(optimalParse);
         }
 
         // Now prune the parse list to keep only the highest scored parse
