@@ -36,7 +36,7 @@ export class CKYParser
         // Let's fill up every other cell
         for (let j = 0; j < words.length; j++)
         {
-            for (let i = j - 1; i >= 0; i--)
+            for (let i = j; i >= 0; i--)
             {
                 this.processTableCell(i, j);
             }

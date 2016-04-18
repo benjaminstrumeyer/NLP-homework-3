@@ -14,7 +14,7 @@ class CKYParser {
             this.table[i][i] = cell;
         }
         for (let j = 0; j < words.length; j++) {
-            for (let i = j - 1; i >= 0; i--) {
+            for (let i = j; i >= 0; i--) {
                 this.processTableCell(i, j);
             }
         }
@@ -35,7 +35,6 @@ class CKYParser {
         var possibleParses = [];
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
-<<<<<<< HEAD
                 let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
                 let rule = this.grammar.findRuleByRHS(rhs);
                 if (!rule)
@@ -47,16 +46,6 @@ class CKYParser {
                     return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
                 })();
                 possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
-=======
-                var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var rule = this.grammar.findRuleByRHS(rhs);
-                if (!rule)
-                    continue;
-                var possibleParse = new CKYCell_1.PossibleParse(rule.left);
-                var score = 0;
-                possibleParse.score = score;
-                possibleParses.push(possibleParse);
->>>>>>> feature/CKYHandler
             }
         }
         return possibleParses;
