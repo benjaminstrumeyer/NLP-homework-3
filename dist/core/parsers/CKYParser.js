@@ -28,11 +28,10 @@ class CKYParser {
     processTableCell(i, j) {
         var table = this.table;
         var currentCell = table[i][j];
-        var possibleParses = currentCell.parses;
         for (let k = i; k < j; k++) {
             let rowCell = table[i][k];
             let colCell = table[k + 1][j];
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
+            currentCell.parses.concat(this.findPossibleParses(rowCell, colCell));
         }
     }
     findPossibleParses(rowCell, colCell) {
@@ -40,16 +39,18 @@ class CKYParser {
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
                 let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                let rule = this.grammar.findRuleByRHS(rhs);
-                if (!rule)
+                let matchingRules = this.grammar.findRulesByRHS(rhs);
+                if (matchingRules.length === 0)
                     continue;
-                let score = (() => {
-                    var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
-                    var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
-                    var probabilityRule = rule.probability;
-                    return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
-                })();
-                possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
+                for (let rule of matchingRules) {
+                    let score = (() => {
+                        var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
+                        var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
+                        var probabilityRule = rule.probability;
+                        return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
+                    })();
+                    possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
+                }
             }
         }
         return possibleParses;

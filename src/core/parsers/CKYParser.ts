@@ -58,14 +58,13 @@ export class CKYParser
         var table = this.table;
         var currentCell = table[i][j];
 
-        var possibleParses = currentCell.parses;
         for (let k = i; k < j; k++)
         {
             let rowCell = table[i][k];
             let colCell = table[k + 1][j];
 
             // Here find all the possible parses that come from the row cells and col cells
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
+            currentCell.parses.concat(this.findPossibleParses(rowCell, colCell));
         }
 
         // After finding and scoring the possible parses
@@ -83,24 +82,30 @@ export class CKYParser
             for (let colParse of colCell.parses)
             {
                 let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                let rule = this.grammar.findRuleByRHS(rhs);
+
+                // Find all rules in grammar where RHS matches
+                let matchingRules = this.grammar.findRulesByRHS(rhs);
 
                 // Skip if LHS was not found
-                if (!rule)
+                if (matchingRules.length === 0)
                     continue;
 
-                // If found, score the possible parse
-                let score = (() =>
+                // For each matching rule, add a possible parse
+                for (let rule of matchingRules)
                 {
-                    var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
-                    var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
-                    var probabilityRule = rule.probability;
+                    // If found, score the possible parse
+                    let score = (() =>
+                    {
+                        var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
+                        var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
+                        var probabilityRule = rule.probability;
 
-                    return MathHelper.doLogSum(rowScore, colScore, probabilityRule);
-                })();
+                        return MathHelper.doLogSum(rowScore, colScore, probabilityRule);
+                    })();
 
-                // Add the parse
-                possibleParses.push(new PossibleParse(rule.left, score));
+                    // Add the parse
+                    possibleParses.push(new PossibleParse(rule.left, score));
+                }
             }
         }
 

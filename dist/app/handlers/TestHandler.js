@@ -4,7 +4,7 @@ const Preprocess_1 = require("../../core/Preprocess");
 const _HandlerBase_1 = require("./_HandlerBase");
 const CKYParser_1 = require("../../core/parsers/CKYParser");
 class TestHandler {
-    static testTreePrint() {
+    static test() {
         var testText = FileWorker_1.FileWorker.readTextFile("./data/test.txt");
         var lines = Preprocess_1.Preprocess.getLines(testText);
         var parsedTable = TestHandler.parser.parse(lines[0]);
