@@ -21,7 +21,7 @@ export class Application
             {
                 help: CommandLineHandler.printHelpText,
 
-                test: TestHandler.testTreePrint,
+                test: TestHandler.test,
                 rebuild: GrammarHandler.rebuild,
 
                 exit: Application.exit

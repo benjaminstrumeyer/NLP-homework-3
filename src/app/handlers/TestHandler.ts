@@ -7,7 +7,7 @@ export class TestHandler
 {
     private static parser = new CKYParser(_HandlerBase.grammar);
     
-    public static testTreePrint()
+    public static test()
     {
         var testText = FileWorker.readTextFile("./data/test.txt");
 
