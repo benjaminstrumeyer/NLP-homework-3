@@ -28,11 +28,15 @@ class CKYParser {
     processTableCell(i, j) {
         var table = this.table;
         var currentCell = table[i][j];
+        var possibleParses = [];
         for (let k = i; k < j; k++) {
             let rowCell = table[i][k];
             let colCell = table[k + 1][j];
-            currentCell.parses.concat(this.findPossibleParses(rowCell, colCell));
+            let foundParses = this.findPossibleParses(rowCell, colCell);
+            possibleParses = possibleParses.concat(foundParses);
         }
+        currentCell.parses = possibleParses;
+        currentCell.pruneNonOptimalParses();
     }
     findPossibleParses(rowCell, colCell) {
         var possibleParses = [];
