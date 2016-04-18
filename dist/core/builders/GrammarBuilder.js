@@ -1,6 +1,7 @@
 "use strict";
 const FileWorker_1 = require("../FileWorker");
 const PCFG_1 = require("../grammar/PCFG");
+const GrammarRule_1 = require("../models/GrammarRule");
 class GrammarBuilder {
     static buildGrammar() {
         var grammar = GrammarBuilder.buildGrammarFromFile();
@@ -22,8 +23,16 @@ class GrammarBuilder {
         if (!grammar) {
             return null;
         }
+        var newGrammar = new PCFG_1.PCFG();
+        Object.assign(newGrammar, grammar);
+        for (let i = 0; i < newGrammar.rules.length; i++) {
+            let rule = newGrammar.rules[i];
+            let newRule = new GrammarRule_1.GrammarRule(rule.left, rule.right);
+            Object.assign(newRule, rule);
+            newGrammar.rules[i] = newRule;
+        }
         console.log("\nGrammar successfully read from file!\n");
-        return grammar;
+        return newGrammar;
     }
 }
 exports.GrammarBuilder = GrammarBuilder;
