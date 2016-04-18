@@ -18,7 +18,7 @@ export class CKYHandler
 
         for (let line of lines)
         {
-            var parsedTree = this.parser.parse(line);
+            var parsedTree = CKYHandler.parser.parse(line);
             var parsedTreeString = TreeParser.deparseTree(parsedTree);
             parsedTrees.push(parsedTreeString);
         }
