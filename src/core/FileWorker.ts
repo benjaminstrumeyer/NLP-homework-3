@@ -70,7 +70,7 @@ export class FileWorker
         fs.writeFileSync(filename, data);
     }
 
-    public static writeJsonFile(filename:string, data:string)
+    public static writeJsonFile(filename:string, data:any)
     {
         // Create directory for the file
         try
