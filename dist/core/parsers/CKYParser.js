@@ -6,57 +6,55 @@ class CKYParser {
         this.grammar = grammar;
     }
     parse(sequence) {
-        this.table = [[]];
-        var words = sequence.split(/\s+/g);
+        var words = sequence.trim().split(/\s+/g);
+        this.reinitializeTable(words.length);
         for (let i = 0; i < words.length; i++) {
             let word = words[i];
             let cell = this.initializeCell(word);
             this.table[i][i] = cell;
         }
-        for (let j = 0; j < words.length; j++) {
+        for (let j = 1; j < words.length; j++) {
             for (let i = j - 1; i >= 0; i--) {
                 this.processTableCell(i, j);
             }
         }
-        return null;
+        return this.table;
+    }
+    reinitializeTable(length) {
+        this.table = new Array(length).fill([])
+            .map(x => new Array(length).fill([])
+            .map(x => new CKYCell_1.CKYCell()));
     }
     processTableCell(i, j) {
         var table = this.table;
         var currentCell = table[i][j];
-        var possibleParses = currentCell.parses;
+        var possibleParses = [];
         for (let k = i; k < j; k++) {
             let rowCell = table[i][k];
             let colCell = table[k + 1][j];
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
+            let foundParses = this.findPossibleParses(rowCell, colCell);
+            possibleParses = possibleParses.concat(foundParses);
         }
+        currentCell.parses = possibleParses;
         currentCell.pruneNonOptimalParses();
     }
     findPossibleParses(rowCell, colCell) {
         var possibleParses = [];
         for (let rowParse of rowCell.parses) {
             for (let colParse of colCell.parses) {
-<<<<<<< HEAD
                 let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                let rule = this.grammar.findRuleByRHS(rhs);
-                if (!rule)
+                let matchingRules = this.grammar.findRulesByRHS(rhs);
+                if (matchingRules.length === 0)
                     continue;
-                let score = (() => {
-                    var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
-                    var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
-                    var probabilityRule = rule.probability;
-                    return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
-                })();
-                possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
-=======
-                var rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                var rule = this.grammar.findRuleByRHS(rhs);
-                if (!rule)
-                    continue;
-                var possibleParse = new CKYCell_1.PossibleParse(rule.left);
-                var score = 0;
-                possibleParse.score = score;
-                possibleParses.push(possibleParse);
->>>>>>> feature/CKYHandler
+                for (let rule of matchingRules) {
+                    let score = (() => {
+                        var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
+                        var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
+                        var probabilityRule = rule.probability;
+                        return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
+                    })();
+                    possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
+                }
             }
         }
         return possibleParses;

@@ -1,5 +1,6 @@
 import {GrammarRule} from "./GrammarRule";
 import {MathHelper} from "../helpers/MathHelper";
+import _ = require("lodash");
 
 export class CKYCell
 {
@@ -7,42 +8,36 @@ export class CKYCell
 
     constructor(parses?:PossibleParse[])
     {
-        this.parses = parses;
+        this.parses = parses || [];
     }
     
     public pruneNonOptimalParses()
     {
         var possibleParses = this.parses;
 
-        var currentParse = possibleParses[0];
+        var optimalParses = [];
 
-        for (let k = 1; k < possibleParses.length; k++)
+        // Go through each parse and find the optimal parse with the highest score
+        for (let parse of possibleParses)
         {
-            if (currentParse.nonTerminal === possibleParses[k].nonTerminal)
-            {
-                if (currentParse.score < possibleParses[k].score)
+            let optimalParse = possibleParses
+                .filter(p => p.nonTerminal === parse.nonTerminal)
+                .reduce((left, right) =>
                 {
-                    //possibleParses.splice(i, 1);
-                    delete(possibleParses[0]);
-                }
-                else
-                {
-                    delete(possibleParses[k]);
-                }
-            }
+                    if(left.score >= right.score)
+                        return left;
+
+                    return right;
+                });
+
+            optimalParses.push(optimalParse);
         }
 
-        // Now we have an array of possibleParses and undefined elements. Filter them.
-        var prunedOptimalParseList = [];
-        for (let p = 0; p < possibleParses.length; p++)
-        {
-            if (possibleParses[p] != null)
-            {
-                prunedOptimalParseList.push(possibleParses[p]);
-            }
-        }
+        // Now prune the parse list to keep only the highest scored parse
+        var prunedOptimalParses = _.uniqWith(optimalParses, (x,y) => x.nonTerminal === y.nonTerminal);
 
-        this.parses = prunedOptimalParseList;
+        // Save it to this.parses
+        this.parses = prunedOptimalParses;
     }
 
     public getScoreByNonTerminal(nonTerminal:string):number
@@ -55,7 +50,6 @@ export class CKYCell
 
         return matchingParse.score;
     }
-
 }
 
 export class PossibleParse
@@ -66,6 +60,6 @@ export class PossibleParse
     constructor(nonTerminal?:string, score?:number)
     {
         this.nonTerminal = nonTerminal;
-        this.score = score;
+        this.score = score || 0;
     }
 }

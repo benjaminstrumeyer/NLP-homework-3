@@ -1,27 +1,20 @@
-import {PCFGTree} from "../../core/models/PCFGTree";
-import {TreeNode} from "../../core/models/TreeNode";
 import {FileWorker} from "../../core/FileWorker";
-import {TreeParser} from "../../core/parsers/TreeParser";
 import {Preprocess} from "../../core/Preprocess";
+import {_HandlerBase} from "./_HandlerBase";
+import {CKYParser} from "../../core/parsers/CKYParser";
 
 export class TestHandler
 {
-    public static testTreePrint()
+    private static parser = new CKYParser(_HandlerBase.grammar);
+    
+    public static test()
     {
-        var trainTrees = FileWorker.readTextFile("./data/train.trees");
+        var testText = FileWorker.readTextFile("./data/test.txt");
 
-        var trees = Preprocess.getLines(trainTrees);
+        var lines = Preprocess.getLines(testText);
 
-        for (let tree of trees)
-        {
-            let parsed = TreeParser.parseTree(tree);
-            let deparsed = TreeParser.deparseTree(parsed);
+        var parsedTable = TestHandler.parser.parse(lines[0]);
 
-            if (tree.trim() !== deparsed.trim())
-            {
-                console.log(tree);
-                console.log(deparsed);
-            }
-        }
+        FileWorker.writeJsonFile("./output/table.json", parsedTable);
     }
 }

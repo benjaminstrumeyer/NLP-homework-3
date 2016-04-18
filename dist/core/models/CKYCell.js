@@ -1,28 +1,24 @@
 "use strict";
+const _ = require("lodash");
 class CKYCell {
     constructor(parses) {
-        this.parses = parses;
+        this.parses = parses || [];
     }
     pruneNonOptimalParses() {
         var possibleParses = this.parses;
-        var currentParse = possibleParses[0];
-        for (let k = 1; k < possibleParses.length; k++) {
-            if (currentParse.nonTerminal === possibleParses[k].nonTerminal) {
-                if (currentParse.score < possibleParses[k].score) {
-                    delete (possibleParses[0]);
-                }
-                else {
-                    delete (possibleParses[k]);
-                }
-            }
+        var optimalParses = [];
+        for (let parse of possibleParses) {
+            let optimalParse = possibleParses
+                .filter(p => p.nonTerminal === parse.nonTerminal)
+                .reduce((left, right) => {
+                if (left.score >= right.score)
+                    return left;
+                return right;
+            });
+            optimalParses.push(optimalParse);
         }
-        var prunedOptimalParseList = [];
-        for (let p = 0; p < possibleParses.length; p++) {
-            if (possibleParses[p] != null) {
-                prunedOptimalParseList.push(possibleParses[p]);
-            }
-        }
-        this.parses = prunedOptimalParseList;
+        var prunedOptimalParses = _.uniqWith(optimalParses, (x, y) => x.nonTerminal === y.nonTerminal);
+        this.parses = prunedOptimalParses;
     }
     getScoreByNonTerminal(nonTerminal) {
         var matchingParse = this.parses
@@ -36,7 +32,7 @@ exports.CKYCell = CKYCell;
 class PossibleParse {
     constructor(nonTerminal, score) {
         this.nonTerminal = nonTerminal;
-        this.score = score;
+        this.score = score || 0;
     }
 }
 exports.PossibleParse = PossibleParse;

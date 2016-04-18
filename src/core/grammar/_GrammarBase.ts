@@ -42,13 +42,6 @@ export abstract class _GrammarBase
 
         // Compute the probabilities
         this.computeProbabilitiesOfRules();
-
-        console.log(
-            this.rules
-                .sort((x,y) => y.observationCount - x.observationCount)
-                .map(x => x.toString())
-                .reduce((x,y) => x + "\n" + y)
-        );
     }
 
     private computeProbabilitiesOfRules()

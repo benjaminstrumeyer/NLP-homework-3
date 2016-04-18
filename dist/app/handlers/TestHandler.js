@@ -1,19 +1,15 @@
 "use strict";
 const FileWorker_1 = require("../../core/FileWorker");
-const TreeParser_1 = require("../../core/parsers/TreeParser");
 const Preprocess_1 = require("../../core/Preprocess");
+const _HandlerBase_1 = require("./_HandlerBase");
+const CKYParser_1 = require("../../core/parsers/CKYParser");
 class TestHandler {
-    static testTreePrint() {
-        var trainTrees = FileWorker_1.FileWorker.readTextFile("./data/train.trees");
-        var trees = Preprocess_1.Preprocess.getLines(trainTrees);
-        for (let tree of trees) {
-            let parsed = TreeParser_1.TreeParser.parseTree(tree);
-            let deparsed = TreeParser_1.TreeParser.deparseTree(parsed);
-            if (tree.trim() !== deparsed.trim()) {
-                console.log(tree);
-                console.log(deparsed);
-            }
-        }
+    static test() {
+        var testText = FileWorker_1.FileWorker.readTextFile("./data/test.txt");
+        var lines = Preprocess_1.Preprocess.getLines(testText);
+        var parsedTable = TestHandler.parser.parse(lines[0]);
+        FileWorker_1.FileWorker.writeJsonFile("./output/table.json", parsedTable);
     }
 }
+TestHandler.parser = new CKYParser_1.CKYParser(_HandlerBase_1._HandlerBase.grammar);
 exports.TestHandler = TestHandler;

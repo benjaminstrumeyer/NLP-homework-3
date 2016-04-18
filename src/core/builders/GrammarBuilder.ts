@@ -1,5 +1,6 @@
 import {FileWorker} from "../FileWorker";
 import {PCFG} from "../grammar/PCFG";
+import {GrammarRule} from "../models/GrammarRule";
 
 export class GrammarBuilder
 {
@@ -42,8 +43,21 @@ export class GrammarBuilder
             return null;
         }
 
+        var newGrammar = new PCFG();
+        Object.assign(newGrammar, grammar);
+
+        for (let i = 0; i < newGrammar.rules.length; i++)
+        {
+            let rule = newGrammar.rules[i];
+
+            let newRule = new GrammarRule(rule.left, rule.right);
+            Object.assign(newRule, rule);
+
+            newGrammar.rules[i] = newRule;
+        }
+
         console.log("\nGrammar successfully read from file!\n");
 
-        return grammar;
+        return newGrammar;
     }
 }

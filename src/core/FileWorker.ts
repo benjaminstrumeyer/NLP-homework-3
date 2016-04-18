@@ -6,6 +6,7 @@ import {PCFG} from "./grammar/PCFG";
 export class FileWorker
 {
     private static _grammarFile = "./output/grammar.json";
+    private static _rulesFile = "./output/rules.txt";
 
     public static getTestTrees():string
     {
@@ -33,7 +34,6 @@ export class FileWorker
 
     public static writeGrammarFile(grammar:PCFG)
     {
-        // Create directory for language model file
         try
         {
             var dir = path.parse(FileWorker._grammarFile).dir;
@@ -44,8 +44,21 @@ export class FileWorker
             if (e.code !== "EEXIST") throw e;
         }
 
-        // Write the language model file
+        // Write the grammar to the grammar file
         jsonfile.writeFileSync(FileWorker._grammarFile, grammar);
+
+        // Write a readable version of the rules to the rules filethis.rules
+        var rulesText = grammar.rules
+            .sort((x, y) =>
+            {
+                if (x.left < y.left) return -1;
+                if (x.left > y.left) return 1;
+                return 0;
+            })
+            .map(x => x.toString())
+            .reduce((x, y) => x + "\n" + y);
+
+        FileWorker.writeTextFile(FileWorker._rulesFile, rulesText);
     }
 
     public static readTextFile(filename:string):string
@@ -55,7 +68,6 @@ export class FileWorker
 
     public static writeTextFile(filename:string, data:string)
     {
-        // Create directory for the file
         try
         {
             var dir = path.parse(filename).dir;
@@ -66,13 +78,11 @@ export class FileWorker
             if (e.code !== "EEXIST") throw e;
         }
 
-        // Write the language model file
         fs.writeFileSync(filename, data);
     }
 
-    public static writeJsonFile(filename:string, data:string)
+    public static writeJsonFile(filename:string, data:any)
     {
-        // Create directory for the file
         try
         {
             var dir = path.parse(filename).dir;
@@ -83,7 +93,6 @@ export class FileWorker
             if (e.code !== "EEXIST") throw e;
         }
 
-        // Write the language model file
         jsonfile.writeFileSync(filename, data);
     }
 }

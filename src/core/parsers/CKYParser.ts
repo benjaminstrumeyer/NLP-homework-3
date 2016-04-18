@@ -15,11 +15,11 @@ export class CKYParser
 
     public parse(sequence:string):PCFGTree
     {
-        // Empty the table out for every parse
-        this.table = [[]];
-
         // Split sequence to words
-        var words = sequence.split(/\s+/g);
+        var words = sequence.trim().split(/\s+/g);
+
+        // Empty the table out for every parse
+        this.reinitializeTable(words.length);
 
         // This is the diagonal initializing loop
         for (let i = 0; i < words.length; i++)
@@ -34,16 +34,23 @@ export class CKYParser
         }
 
         // Let's fill up every other cell
-        for (let j = 0; j < words.length; j++)
+        for (let j = 1; j < words.length; j++)
         {
             for (let i = j - 1; i >= 0; i--)
             {
                 this.processTableCell(i, j);
             }
         }
-                
+
         // Gotta return the final parsed tree
         return null;
+    }
+
+    private reinitializeTable(length)
+    {
+        this.table = new Array(length).fill([])
+            .map(x => new Array(length).fill([])
+                .map(x => new CKYCell()));
     }
 
     private processTableCell(i:number, j:number)
@@ -51,15 +58,18 @@ export class CKYParser
         var table = this.table;
         var currentCell = table[i][j];
 
-        var possibleParses = currentCell.parses;
+        var possibleParses = [];
         for (let k = i; k < j; k++)
         {
             let rowCell = table[i][k];
-            let colCell = table[k+1][j];
+            let colCell = table[k + 1][j];
 
             // Here find all the possible parses that come from the row cells and col cells
-            possibleParses.concat(this.findPossibleParses(rowCell, colCell));
+            let foundParses = this.findPossibleParses(rowCell, colCell);
+            possibleParses = possibleParses.concat(foundParses);
         }
+
+        currentCell.parses = possibleParses;
 
         // After finding and scoring the possible parses
         // Let's prune so we only have the optimal parses
@@ -76,24 +86,30 @@ export class CKYParser
             for (let colParse of colCell.parses)
             {
                 let rhs = [rowParse.nonTerminal, colParse.nonTerminal];
-                let rule = this.grammar.findRuleByRHS(rhs);
+
+                // Find all rules in grammar where RHS matches
+                let matchingRules = this.grammar.findRulesByRHS(rhs);
 
                 // Skip if LHS was not found
-                if(!rule)
+                if (matchingRules.length === 0)
                     continue;
 
-                // If found, score the possible parse
-                let score = (() =>
+                // For each matching rule, add a possible parse
+                for (let rule of matchingRules)
                 {
-                    var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
-                    var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
-                    var probabilityRule = rule.probability;
+                    // If found, score the possible parse
+                    let score = (() =>
+                    {
+                        var rowScore = rowCell.getScoreByNonTerminal(rule.right[0]);
+                        var colScore = colCell.getScoreByNonTerminal(rule.right[1]);
+                        var probabilityRule = rule.probability;
 
-                    return MathHelper.doLogSum(rowScore, colScore, probabilityRule);
-                })();
+                        return MathHelper.doLogSum(rowScore, colScore, probabilityRule);
+                    })();
 
-                // Add the parse
-                possibleParses.push(new PossibleParse(rule.left, score));
+                    // Add the parse
+                    possibleParses.push(new PossibleParse(rule.left, score));
+                }
             }
         }
 

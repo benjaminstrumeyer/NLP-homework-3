@@ -29,6 +29,17 @@ class FileWorker {
                 throw e;
         }
         jsonfile.writeFileSync(FileWorker._grammarFile, grammar);
+        var rulesText = grammar.rules
+            .sort((x, y) => {
+            if (x.left < y.left)
+                return -1;
+            if (x.left > y.left)
+                return 1;
+            return 0;
+        })
+            .map(x => x.toString())
+            .reduce((x, y) => x + "\n" + y);
+        FileWorker.writeTextFile(FileWorker._rulesFile, rulesText);
     }
     static readTextFile(filename) {
         return fs.readFileSync(filename).toString();
@@ -57,4 +68,5 @@ class FileWorker {
     }
 }
 FileWorker._grammarFile = "./output/grammar.json";
+FileWorker._rulesFile = "./output/rules.txt";
 exports.FileWorker = FileWorker;

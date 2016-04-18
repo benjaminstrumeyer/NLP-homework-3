@@ -10,7 +10,7 @@ class CKYHandler {
         var lines = Preprocess_1.Preprocess.getLines(testText);
         var parsedTrees = [];
         for (let line of lines) {
-            var parsedTree = this.parser.parse(line);
+            var parsedTree = CKYHandler.parser.parse(line);
             var parsedTreeString = TreeParser_1.TreeParser.deparseTree(parsedTree);
             parsedTrees.push(parsedTreeString);
         }
