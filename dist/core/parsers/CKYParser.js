@@ -6,8 +6,8 @@ class CKYParser {
         this.grammar = grammar;
     }
     parse(sequence) {
-        var words = sequence.split(/\s+/g);
-        this.table = new Array(words.length).fill([]);
+        var words = sequence.trim().split(/\s+/g);
+        this.table = new Array(words.length).fill([]).map(x => []);
         for (let i = 0; i < words.length; i++) {
             let word = words[i];
             let cell = this.initializeCell(word);
