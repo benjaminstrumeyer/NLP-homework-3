@@ -1,4 +1,4 @@
-## Assignment 2
+## Assignment 3
 
 ### How To Run
 
@@ -6,7 +6,7 @@ To run the application you need to have NodeJS installed on your machine. Then f
 
 * Extract the archive that contains the assignment to a folder.
 * At the root of the folder, open up a terminal or a command prompt and type `npm install`.
-* After npm finishes installing the dependencies, in the same terminal, type in `node ./dist/Index.js`.
+* After npm finishes installing the dependencies, in the same terminal, type in `node --harmony ./dist/Index.js`.
 * Application should be running now and showing the prompt for available commands.
 
 ### Project Structure
@@ -15,7 +15,7 @@ The archive contains a Git repository for the assignment. The directory structur
 
 * `src` - Contains the source code of the application written in Typescript.
 * `dist` - Contains the Typescript code transpiled into Javascript. This is probably not human readable.
-* `data` - Contains the `train.txt` and the `test.txt` files.
+* `data` - Contains the `train.trees`, `test.trees`, `test.txt` and the evaluator files.
 * `output` - Should contain any output files related to the assignment.
 
 Everything else in there is metadata required to build and compile the application.
