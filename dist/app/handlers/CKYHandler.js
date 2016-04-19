@@ -25,6 +25,12 @@ class CKYHandler {
         var parsedText = parsedTrees.join("\n");
         FileWorker_1.FileWorker.writeTextFile("./output/parsed.trees", parsedText);
     }
+    static parseSingleSentence(sentence) {
+        console.log(sentence);
+        var parsedTree = CKYHandler.parser.parse(sentence);
+        var parsedTreeString = TreeParser_1.TreeParser.deparseTree(parsedTree);
+        console.log("\n" + parsedTreeString + "\n");
+    }
 }
 CKYHandler.parser = new CKYParser_1.CKYParser(_HandlerBase_1._HandlerBase.grammar);
 exports.CKYHandler = CKYHandler;

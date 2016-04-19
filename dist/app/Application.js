@@ -13,7 +13,9 @@ class Application {
             help: CommandLineHandler_1.CommandLineHandler.printHelpText,
             test: TestHandler_1.TestHandler.test,
             rebuild: GrammarHandler_1.GrammarHandler.rebuild,
+            top: GrammarHandler_1.GrammarHandler.getTop,
             parse: CKYHandler_1.CKYHandler.parseTestText,
+            "parse-single": CKYHandler_1.CKYHandler.parseSingleSentence,
             exit: Application.exit
         });
     }
