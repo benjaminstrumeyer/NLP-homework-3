@@ -25,7 +25,6 @@ class CKYParser {
         if (!topParse)
             return null;
         var pcfgTree = this.createTreeFromParsePointers(topParse);
-        console.log(pcfgTree.toString());
         return pcfgTree;
     }
     reinitializeTable(length) {

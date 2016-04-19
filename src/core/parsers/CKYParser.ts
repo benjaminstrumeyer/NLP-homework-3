@@ -53,8 +53,6 @@ export class CKYParser
         // If it does, form the tree from the back pointers in the Parses
         var pcfgTree = this.createTreeFromParsePointers(topParse);
 
-        console.log(pcfgTree.toString());
-
         // Return the final parsed tree
         return pcfgTree;
     }

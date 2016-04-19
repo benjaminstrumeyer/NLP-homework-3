@@ -13,8 +13,8 @@ export class TestHandler
 
         var lines = Preprocess.getLines(testText);
 
-        var parsedTable = TestHandler.parser.parse(lines[0]);
+        var parsedTree = TestHandler.parser.parse(lines[0]);
 
-        FileWorker.writeJsonFile("./output/table.json", parsedTable);
+        console.log(parsedTree.toString());
     }
 }

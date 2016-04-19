@@ -7,8 +7,8 @@ class TestHandler {
     static test() {
         var testText = FileWorker_1.FileWorker.readTextFile("./data/test.txt");
         var lines = Preprocess_1.Preprocess.getLines(testText);
-        var parsedTable = TestHandler.parser.parse(lines[0]);
-        FileWorker_1.FileWorker.writeJsonFile("./output/table.json", parsedTable);
+        var parsedTree = TestHandler.parser.parse(lines[0]);
+        console.log(parsedTree.toString());
     }
 }
 TestHandler.parser = new CKYParser_1.CKYParser(_HandlerBase_1._HandlerBase.grammar);
