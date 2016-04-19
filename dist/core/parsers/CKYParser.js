@@ -18,7 +18,7 @@ class CKYParser {
                 this.processTableCell(i, j);
             }
         }
-        return this.table;
+        return null;
     }
     reinitializeTable(length) {
         this.table = new Array(length).fill([])

@@ -8,7 +8,6 @@ class Application {
         var readline = readlineSync;
         CommandLineHandler_1.CommandLineHandler.printWelcomeText();
         CommandLineHandler_1.CommandLineHandler.printHelpText();
-        TestHandler_1.TestHandler.test();
         readline.promptCLLoop({
             help: CommandLineHandler_1.CommandLineHandler.printHelpText,
             test: TestHandler_1.TestHandler.test,
