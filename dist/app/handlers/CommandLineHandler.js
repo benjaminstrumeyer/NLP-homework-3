@@ -12,7 +12,10 @@ class CommandLineHandler {
         console.log(CommandLineHandler.writeHelpLine("help", "Print this help text"));
         console.log();
         console.log(CommandLineHandler.writeHelpLine("rebuild", "Rebuild the grammar file"));
+        console.log(CommandLineHandler.writeHelpLine("top <count>", "Get most frequent grammar rules", 3));
+        console.log();
         console.log(CommandLineHandler.writeHelpLine("parse", "Run the CKY Parser on test.txt"));
+        console.log(CommandLineHandler.writeHelpLine("parse-single <sentence>", "Run the CKY Parser on the provided sentence", 2));
         console.log();
         console.log(CommandLineHandler.writeHelpLine("exit", "Exit Application"));
         console.log();

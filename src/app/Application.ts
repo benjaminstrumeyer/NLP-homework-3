@@ -24,8 +24,10 @@ export class Application
 
                 test: TestHandler.test,
                 rebuild: GrammarHandler.rebuild,
+                top: GrammarHandler.getTop,
 
                 parse: CKYHandler.parseTestText,
+                "parse-single": CKYHandler.parseSingleSentence,
 
                 exit: Application.exit
             });

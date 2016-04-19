@@ -39,4 +39,14 @@ export class CKYHandler
         var parsedText = parsedTrees.join("\n");
         FileWorker.writeTextFile("./output/parsed.trees", parsedText);
     }
+
+    public static parseSingleSentence(sentence:string)
+    {
+        console.log(sentence);
+
+        var parsedTree = CKYHandler.parser.parse(sentence);
+        var parsedTreeString = TreeParser.deparseTree(parsedTree);
+
+        console.log("\n" + parsedTreeString + "\n");
+    }
 }
