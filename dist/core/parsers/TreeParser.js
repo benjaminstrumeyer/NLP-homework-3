@@ -31,6 +31,8 @@ class TreeParser {
         return pcfgTree;
     }
     static deparseTree(tree) {
+        if (!tree)
+            return null;
         var deparseTreeNode = function (node) {
             var result = node.data;
             if (node.isTerminal())

@@ -54,6 +54,9 @@ export class TreeParser
 
     public static deparseTree(tree:PCFGTree):string
     {
+        if (!tree)
+            return null;
+
         var deparseTreeNode = function (node:TreeNode):string
         {
             var result = node.data;
