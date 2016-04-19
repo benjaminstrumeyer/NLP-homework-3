@@ -1,26 +1,28 @@
 import fs = require("fs");
 import path = require("path");
 import jsonfile = require("jsonfile");
+import {PCFG} from "./grammar/PCFG";
 
 export class FileWorker
 {
-    private static _languageModelFile = "./output/language_model.json";
+    private static _grammarFile = "./output/grammar.json";
+    private static _rulesFile = "./output/rules.txt";
 
-    public static getTestCorpus():string
+    public static getTestTrees():string
     {
-        return fs.readFileSync("./data/test.txt").toString();
+        return fs.readFileSync("./data/test.trees").toString();
     }
 
-    public static getTrainingCorpus():string
+    public static getTrainingTrees():string
     {
-        return fs.readFileSync("./data/train.txt").toString();
+        return fs.readFileSync("./data/train.trees").toString();
     }
 
-    public static readLanguageModelFile()
+    public static readGrammarFile():PCFG
     {
         try
         {
-            return jsonfile.readFileSync(FileWorker._languageModelFile, {throws: false});
+            return jsonfile.readFileSync(FileWorker._grammarFile, {throws: false});
         }
         catch (e)
         {
@@ -30,12 +32,11 @@ export class FileWorker
         }
     }
 
-    public static writeLanguageModelFile(languageModel)
+    public static writeGrammarFile(grammar:PCFG)
     {
-        // Create directory for language model file
         try
         {
-            var dir = path.parse(FileWorker._languageModelFile).dir;
+            var dir = path.parse(FileWorker._grammarFile).dir;
             fs.mkdirSync(dir);
         }
         catch (e)
@@ -43,13 +44,30 @@ export class FileWorker
             if (e.code !== "EEXIST") throw e;
         }
 
-        // Write the language model file
-        jsonfile.writeFileSync(FileWorker._languageModelFile, languageModel.corpus);
+        // Write the grammar to the grammar file
+        jsonfile.writeFileSync(FileWorker._grammarFile, grammar);
+
+        // Write a readable version of the rules to the rules filethis.rules
+        var rulesText = grammar.rules
+            .sort((x, y) =>
+            {
+                if (x.left < y.left) return -1;
+                if (x.left > y.left) return 1;
+                return 0;
+            })
+            .map(x => x.toString())
+            .reduce((x, y) => x + "\n" + y);
+
+        FileWorker.writeTextFile(FileWorker._rulesFile, rulesText);
+    }
+
+    public static readTextFile(filename:string):string
+    {
+        return fs.readFileSync(filename).toString();
     }
 
     public static writeTextFile(filename:string, data:string)
     {
-        // Create directory for the file
         try
         {
             var dir = path.parse(filename).dir;
@@ -60,13 +78,11 @@ export class FileWorker
             if (e.code !== "EEXIST") throw e;
         }
 
-        // Write the language model file
         fs.writeFileSync(filename, data);
     }
 
-    public static writeJsonFile(filename:string, data:string)
+    public static writeJsonFile(filename:string, data:any)
     {
-        // Create directory for the file
         try
         {
             var dir = path.parse(filename).dir;
@@ -77,7 +93,6 @@ export class FileWorker
             if (e.code !== "EEXIST") throw e;
         }
 
-        // Write the language model file
         jsonfile.writeFileSync(filename, data);
     }
 }

@@ -1,14 +1,11 @@
-export class CommandLineHandler
-{
-    public static printWelcomeText()
-    {
+"use strict";
+class CommandLineHandler {
+    static printWelcomeText() {
         console.log();
         console.log("Welcome to the Syntactic Parsing playground for CSE 390");
         console.log("---------------------------------------------------------");
     }
-
-    public static printHelpText()
-    {
+    static printHelpText() {
         console.log();
         console.log("Available commands:");
         console.log("---------------------------------------------------------");
@@ -23,21 +20,17 @@ export class CommandLineHandler
         console.log(CommandLineHandler.writeHelpLine("exit", "Exit Application"));
         console.log();
     }
-
-    private static writeHelpLine(command, text, tabs?)
-    {
+    static writeHelpLine(command, text, tabs) {
         tabs = tabs || 4;
-
-        var tabsString = (function ()
-        {
+        var tabsString = (function () {
             var s = "";
-            for (let i = 0; i < tabs; i++)
-            {
+            for (let i = 0; i < tabs; i++) {
                 s += "\t";
             }
             return s;
         })();
-
         return command + tabsString + text;
-    };
+    }
+    ;
 }
+exports.CommandLineHandler = CommandLineHandler;

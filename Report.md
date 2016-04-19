@@ -1,45 +1,37 @@
-##Assumptions
+# Team: Bik Ghosh and Benjamin Strumeyer
 
-* While parsing the corpuses, I assumed that each sequence began with an arbtrary number, and was delimited by a `\n`.
-* I ignored the arbitrary line numbers at the beginning of each sequence in both the training and test corpus.
-* While parsing the tags for each word, I assumed that each token was in the format of `{word}/{tag}`.
-* I added the start token/tag pair (`<s>/<s>`) in front of each sequence in each corpus while processing the respective corpuses, but disregarded them while generating any report such as accuracy / precision / confusion matrix etc. 
+## Evaluator
+
+The evaluator output:
+
+* parsed.trees    386 brackets
+* test.trees      406 brackets
+* matching        334 brackets
+
+#### Accuracy: 82.266009852%
 
 ---
 
-##Accuracy
-####Frequency Based Tagger: 75.49%
-####HMM Tagger: 62.76%
+## Top 10 Frequent Rules
+
+1. PUNC => .
+2. TO => to
+3. PP => IN NP_NNP
+4. IN => from
+5. PP => IN NP
+6. PP => TO NP_NNP
+7. NNS => flightsw
+8. NP => NNP NNP
+9. PUNC => ? 
+10. DT => the
+
+#### Number of Unary Rules: 397
+#### Number of Binary Rules: 393
 
 ---
 
-##Confusion Matrices
-####Frequency Based Tagger:
+## Examples of Errors:
 
-|            | NN  | NNP | IN  | DT  | -NONE- | NNS | JJ  | ,   | .   | VBD |
-|------------|-----|-----|-----|-----|--------|-----|-----|-----|-----|-----|
-| **NN**     | 652 | 3   | 0   | 0   | 0      | 2   | 7   | 0   | 0   | 1   |
-| **NNP**    | 276 | 267 | 0   | 0   | 0      | 0   | 4   | 0   | 0   | 0   |
-| **IN**     | 1   | 0   | 537 | 0   | 0      | 0   | 1   | 0   | 0   | 0   |
-| **DT**     | 2   | 0   | 2   | 431 | 0      | 0   | 0   | 0   | 0   | 0   |
-| **-NONE-** | 40  | 0   | 0   | 0   | 303    | 0   | 0   | 0   | 0   | 0   |
-| **NNS**    | 129 | 0   | 0   | 0   | 0      | 209 | 0   | 0   | 0   | 0   |
-| **JJ**     | 154 | 1   | 0   | 1   | 0      | 0   | 148 | 0   | 0   | 0   |
-| **,**      | 0   | 0   | 0   | 0   | 0      | 0   | 0   | 235 | 0   | 0   |
-| **.**      | 0   | 0   | 0   | 0   | 0      | 0   | 0   | 0   | 198 | 0   |
-| **VBD**    | 62  | 0   | 0   | 0   | 0      | 0   | 0   | 0   | 0   | 112 |
+* When using parse-single to run the CYK algorithm on a single sentence, sometimes it'll return a null. This does not mean our algorithm doesn't work. It means that the grammar we developed using our test trees file did not give us proper rules for possibly unknown words in the sentence string. For example, if a word in our sentence is "gfdgfd", then we most likely won't have a nonterminal relating to "gfdgfd" in our grammar.
 
-####HMM Tagger:
-
-|            | NN  | NNP | IN  | DT  | -NONE- | NNS | JJ  | ,   | .   | VBD |
-|------------|-----|-----|-----|-----|--------|-----|-----|-----|-----|-----|
-| **NN**     | 497 | 62  | 19  | 45  | 7      | 5   | 25  | 0   | 1   | 0   |
-| **NNP**    | 83  | 345 | 17  | 60  | 3      | 4   | 31  | 0   | 0   | 0   |
-| **IN**     | 7   | 8   | 478 | 15  | 6      | 1   | 1   | 5   | 0   | 2   |
-| **DT**     | 2   | 11  | 22  | 394 | 2      | 0   | 1   | 0   | 0   | 0   |
-| **-NONE-** | 31  | 22  | 13  | 11  | 256    | 2   | 4   | 0   | 0   | 2   |
-| **NNS**    | 130 | 28  | 17  | 30  | 7      | 102 | 17  | 0   | 0   | 1   |
-| **JJ**     | 31  | 32  | 17  | 75  | 12     | 1   | 133 | 1   | 1   | 1   |
-| **,**      | 1   | 2   | 15  | 0   | 0      | 0   | 0   | 213 | 0   | 1   |
-| **.**      | 0   | 0   | 0   | 0   | 0      | 0   | 0   | 0   | 198 | 0   |
-| **VBD**    | 19  | 16  | 23  | 7   | 1      | 0   | 1   | 0   | 0   | 100 |
+* Two of the sentences in `test.txt` didn't parse and returned empty trees. So we had to replace those trees in the `parsed.trees` file with "()" to make the evaluator work. Otherwise it was throwing errors because the two lines were empty.

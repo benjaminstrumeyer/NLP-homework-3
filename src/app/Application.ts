@@ -1,10 +1,9 @@
 import readlineSync = require("readline-sync");
 
 import {CommandLineHandler} from "./handlers/CommandLineHandler";
-import {LanguageModelHandler} from "./handlers/LanguageModelHandler";
-import {EvaluatorHandler} from "./handlers/EvaluatorHandler";
-import {AnalyzerHandler} from "./handlers/AnalyzerHandler";
-import {OutputHandler} from "./handlers/OutputHandler";
+import {GrammarHandler} from "./handlers/GrammarHandler";
+import {TestHandler} from "./handlers/TestHandler";
+import {CKYHandler} from "./handlers/CKYHandler";
 
 export class Application
 {
@@ -23,16 +22,12 @@ export class Application
             {
                 help: CommandLineHandler.printHelpText,
 
-                rebuild: LanguageModelHandler.rebuild,
+                test: TestHandler.test,
+                rebuild: GrammarHandler.rebuild,
+                top: GrammarHandler.getTop,
 
-                accuracy: EvaluatorHandler.evaluateAccuracy,
-                precision: EvaluatorHandler.evaluatePrecision,
-                recall: EvaluatorHandler.evaluateRecall,
-                f1: EvaluatorHandler.evaluateF1,
-
-                confusion: AnalyzerHandler.generateConfusionMatrix,
-
-                output: OutputHandler.outputTaggedCorpus,
+                parse: CKYHandler.parseTestText,
+                "parse-single": CKYHandler.parseSingleSentence,
 
                 exit: Application.exit
             });
