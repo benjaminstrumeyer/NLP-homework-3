@@ -44,7 +44,8 @@ export class CKYParser
         }
 
         // Check if final cell has a TOP
-        var topRightCell = this.table[words.length-1][words.length-1];
+        var topRightCell = this.table[0][words.length-1];
+
         var topParse = topRightCell.searchParsesForNonTerminal("TOP");
 
         if (!topParse)
