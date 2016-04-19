@@ -29,7 +29,7 @@ export class CKYHandler
         {
             var parsedTree = CKYHandler.parser.parse(line);
             var parsedTreeString = TreeParser.deparseTree(parsedTree);
-            parsedTrees.push(parsedTreeString);
+            parsedTrees.push(parsedTreeString || "()");
 
             progressBar.tick();
         }

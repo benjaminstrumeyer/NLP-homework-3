@@ -18,7 +18,7 @@ class CKYHandler {
         for (let line of lines) {
             var parsedTree = CKYHandler.parser.parse(line);
             var parsedTreeString = TreeParser_1.TreeParser.deparseTree(parsedTree);
-            parsedTrees.push(parsedTreeString);
+            parsedTrees.push(parsedTreeString || "()");
             progressBar.tick();
         }
         console.log("\nCKY Parser finished parsing test.txt and wrote the resulting trees into ./output/parsed.trees.\n");

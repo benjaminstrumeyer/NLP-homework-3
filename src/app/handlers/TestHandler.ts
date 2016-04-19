@@ -5,16 +5,11 @@ import {CKYParser} from "../../core/parsers/CKYParser";
 
 export class TestHandler
 {
-    private static parser = new CKYParser(_HandlerBase.grammar);
-    
     public static test()
     {
-        var testText = FileWorker.readTextFile("./data/test.txt");
+        var grammar = _HandlerBase.grammar;
 
-        var lines = Preprocess.getLines(testText);
-
-        var parsedTree = TestHandler.parser.parse(lines[0]);
-
-        console.log(parsedTree.toString());
+        console.log(grammar.rules.filter(x => x.isUnary()).length);
+        console.log(grammar.rules.filter(x => x.isBinary()).length);
     }
 }
