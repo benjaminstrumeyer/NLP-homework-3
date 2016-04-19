@@ -1,6 +1,8 @@
 "use strict";
 const CKYCell_1 = require("../models/CKYCell");
+const PCFGTree_1 = require("../models/PCFGTree");
 const MathHelper_1 = require("../helpers/MathHelper");
+const TreeNode_1 = require("../models/TreeNode");
 class CKYParser {
     constructor(grammar) {
         this.grammar = grammar;
@@ -18,12 +20,30 @@ class CKYParser {
                 this.processTableCell(i, j);
             }
         }
-        return null;
+        var topRightCell = this.table[words.length - 1][words.length - 1];
+        var topParse = topRightCell.searchParsesForNonTerminal("TOP");
+        if (!topParse)
+            return null;
+        var pcfgTree = this.createTreeFromParsePointers(topParse);
+        console.log(pcfgTree.toString());
+        return pcfgTree;
     }
     reinitializeTable(length) {
         this.table = new Array(length).fill([])
             .map(x => new Array(length).fill([])
             .map(x => new CKYCell_1.CKYCell()));
+    }
+    initializeCell(word) {
+        var rules = this.grammar.rules;
+        var matchingRules = rules
+            .filter(rule => rule.isUnary() && rule.right[0] === word);
+        var parses = matchingRules
+            .map(rule => {
+            let parse = new CKYCell_1.PossibleParse(rule.left, rule.probability);
+            parse.terminal = word;
+            return parse;
+        });
+        return new CKYCell_1.CKYCell(parses);
     }
     processTableCell(i, j) {
         var table = this.table;
@@ -53,19 +73,30 @@ class CKYParser {
                         var probabilityRule = rule.probability;
                         return MathHelper_1.MathHelper.doLogSum(rowScore, colScore, probabilityRule);
                     })();
-                    possibleParses.push(new CKYCell_1.PossibleParse(rule.left, score));
+                    let parse = new CKYCell_1.PossibleParse(rule.left, score);
+                    parse.rowBackPointer = rowParse;
+                    parse.colBackPointer = colParse;
+                    possibleParses.push(parse);
                 }
             }
         }
         return possibleParses;
     }
-    initializeCell(word) {
-        var rules = this.grammar.rules;
-        var matchingRules = rules
-            .filter(rule => rule.isUnary() && rule.right[0] === word);
-        var parses = matchingRules
-            .map(rule => new CKYCell_1.PossibleParse(rule.left, rule.probability));
-        return new CKYCell_1.CKYCell(parses);
+    createTreeFromParsePointers(start) {
+        var root = new TreeNode_1.TreeNode(start.nonTerminal);
+        var traverseParsePointers = function (node, parse) {
+            if (!parse.rowBackPointer || !parse.colBackPointer) {
+                node.addChild(new TreeNode_1.TreeNode(parse.terminal));
+                return;
+            }
+            var rowBackNode = new TreeNode_1.TreeNode(parse.rowBackPointer.nonTerminal);
+            var colBackNode = new TreeNode_1.TreeNode(parse.colBackPointer.nonTerminal);
+            traverseParsePointers(rowBackNode, parse.rowBackPointer);
+            traverseParsePointers(colBackNode, parse.colBackPointer);
+            node.addChildren(rowBackNode, colBackNode);
+        };
+        traverseParsePointers(root, start);
+        return new PCFGTree_1.PCFGTree(root);
     }
 }
 exports.CKYParser = CKYParser;

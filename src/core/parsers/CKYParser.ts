@@ -2,6 +2,7 @@ import {PCFG} from "../grammar/PCFG";
 import {CKYCell, PossibleParse} from "../models/CKYCell";
 import {PCFGTree} from "../models/PCFGTree";
 import {MathHelper} from "../helpers/MathHelper";
+import {TreeNode} from "../models/TreeNode";
 
 export class CKYParser
 {
@@ -42,8 +43,20 @@ export class CKYParser
             }
         }
 
-        // Gotta return the final parsed tree
-        return null;
+        // Check if final cell has a TOP
+        var topRightCell = this.table[words.length-1][words.length-1];
+        var topParse = topRightCell.searchParsesForNonTerminal("TOP");
+
+        if (!topParse)
+            return null;
+
+        // If it does, form the tree from the back pointers in the Parses
+        var pcfgTree = this.createTreeFromParsePointers(topParse);
+
+        console.log(pcfgTree.toString());
+
+        // Return the final parsed tree
+        return pcfgTree;
     }
 
     private reinitializeTable(length)
@@ -51,6 +64,24 @@ export class CKYParser
         this.table = new Array(length).fill([])
             .map(x => new Array(length).fill([])
                 .map(x => new CKYCell()));
+    }
+
+    private initializeCell(word:string):CKYCell
+    {
+        var rules = this.grammar.rules;
+
+        var matchingRules = rules
+            .filter(rule => rule.isUnary() && rule.right[0] === word);
+
+        var parses = matchingRules
+            .map(rule =>
+            {
+                let parse = new PossibleParse(rule.left, rule.probability);
+                parse.terminal = word;
+                return parse;
+            });
+
+        return new CKYCell(parses);
     }
 
     private processTableCell(i:number, j:number)
@@ -107,8 +138,13 @@ export class CKYParser
                         return MathHelper.doLogSum(rowScore, colScore, probabilityRule);
                     })();
 
+                    let parse = new PossibleParse(rule.left, score);
+
+                    parse.rowBackPointer = rowParse;
+                    parse.colBackPointer = colParse;
+
                     // Add the parse
-                    possibleParses.push(new PossibleParse(rule.left, score));
+                    possibleParses.push(parse);
                 }
             }
         }
@@ -116,16 +152,29 @@ export class CKYParser
         return possibleParses;
     }
 
-    private initializeCell(word:string):CKYCell
+    private createTreeFromParsePointers(start:PossibleParse):PCFGTree
     {
-        var rules = this.grammar.rules;
+        var root = new TreeNode(start.nonTerminal);
 
-        var matchingRules = rules
-            .filter(rule => rule.isUnary() && rule.right[0] === word);
+        var traverseParsePointers = function (node:TreeNode, parse:PossibleParse)
+        {
+            if (!parse.rowBackPointer || !parse.colBackPointer)
+            {
+                node.addChild(new TreeNode(parse.terminal));
+                return;
+            }
 
-        var parses = matchingRules
-            .map(rule => new PossibleParse(rule.left, rule.probability));
+            var rowBackNode = new TreeNode(parse.rowBackPointer.nonTerminal);
+            var colBackNode = new TreeNode(parse.colBackPointer.nonTerminal);
 
-        return new CKYCell(parses);
+            traverseParsePointers(rowBackNode, parse.rowBackPointer);
+            traverseParsePointers(colBackNode, parse.colBackPointer);
+
+            node.addChildren(rowBackNode, colBackNode);
+        };
+
+        traverseParsePointers(root, start);
+
+        return new PCFGTree(root);
     }
 }

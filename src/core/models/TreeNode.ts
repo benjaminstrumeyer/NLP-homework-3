@@ -16,6 +16,20 @@ export class TreeNode
         }
     }
 
+    public addChild(node:TreeNode)
+    {
+        node.parent = this;
+        this.children.push(node);
+    }
+
+    public addChildren(...nodes:TreeNode[])
+    {
+        for (let node of nodes)
+        {
+            this.addChild(node);
+        }        
+    }
+
     public isTerminal():boolean
     {
         return this.children.length === 0;

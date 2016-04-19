@@ -4,8 +4,9 @@ export class PCFGTree
 {
     public root:TreeNode;
 
-    constructor()
+    constructor(root?:TreeNode)
     {
+        this.root = root;
     }
 
     public toString = function ():string

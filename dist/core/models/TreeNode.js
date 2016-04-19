@@ -23,6 +23,15 @@ class TreeNode {
             parent.children.push(this);
         }
     }
+    addChild(node) {
+        node.parent = this;
+        this.children.push(node);
+    }
+    addChildren(...nodes) {
+        for (let node of nodes) {
+            this.addChild(node);
+        }
+    }
     isTerminal() {
         return this.children.length === 0;
     }
