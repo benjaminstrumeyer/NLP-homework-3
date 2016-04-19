@@ -3,6 +3,7 @@ const readlineSync = require("readline-sync");
 const CommandLineHandler_1 = require("./handlers/CommandLineHandler");
 const GrammarHandler_1 = require("./handlers/GrammarHandler");
 const TestHandler_1 = require("./handlers/TestHandler");
+const CKYHandler_1 = require("./handlers/CKYHandler");
 class Application {
     static run() {
         var readline = readlineSync;
@@ -12,6 +13,7 @@ class Application {
             help: CommandLineHandler_1.CommandLineHandler.printHelpText,
             test: TestHandler_1.TestHandler.test,
             rebuild: GrammarHandler_1.GrammarHandler.rebuild,
+            parse: CKYHandler_1.CKYHandler.parseTestText,
             exit: Application.exit
         });
     }

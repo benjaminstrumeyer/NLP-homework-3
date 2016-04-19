@@ -50,12 +50,21 @@ export class CKYCell
 
         return matchingParse.score;
     }
+
+    public searchParsesForNonTerminal(nonTerminal:string):PossibleParse
+    {
+        return this.parses.filter(parse => parse.nonTerminal === nonTerminal)[0];
+    }
 }
 
 export class PossibleParse
 {
+    public terminal:string;
     public nonTerminal:string;
     public score: number;
+
+    public rowBackPointer:PossibleParse;
+    public colBackPointer:PossibleParse;
 
     constructor(nonTerminal?:string, score?:number)
     {

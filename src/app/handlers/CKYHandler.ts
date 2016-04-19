@@ -1,3 +1,5 @@
+import ProgressBar = require("progress");
+
 import {FileWorker} from "../../core/FileWorker";
 import {Preprocess} from "../../core/Preprocess";
 import {CKYParser} from "../../core/parsers/CKYParser";
@@ -16,12 +18,23 @@ export class CKYHandler
 
         var parsedTrees = [];
 
+        var progressBar = new ProgressBar("Parsing test.txt for :elapseds [:bar] :percent",
+            {
+                total: lines.length,
+                width: 50,
+                complete: "#"
+            });
+
         for (let line of lines)
         {
             var parsedTree = CKYHandler.parser.parse(line);
             var parsedTreeString = TreeParser.deparseTree(parsedTree);
             parsedTrees.push(parsedTreeString);
+
+            progressBar.tick();
         }
+
+        console.log("\nCKY Parser finished parsing test.txt and wrote the resulting trees into ./output/parsed.trees.\n");
 
         var parsedText = parsedTrees.join("\n");
         FileWorker.writeTextFile("./output/parsed.trees", parsedText);

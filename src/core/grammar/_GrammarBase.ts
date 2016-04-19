@@ -1,4 +1,5 @@
 import _ = require("lodash");
+import ProgressBar = require("progress");
 
 import {GrammarRule} from "../models/GrammarRule";
 import {TreeParser} from "../parsers/TreeParser";
@@ -15,6 +16,13 @@ export abstract class _GrammarBase
     {
         var treeLines = Preprocess.getLines(unparsedTrees);
 
+        var progressBar = new ProgressBar("Building grammar from test.trees for :elapseds [:bar] :percent",
+            {
+                total: treeLines.length,
+                width: 50,
+                complete: "#"
+            });
+
         var allRules = [];
         for (let tree of treeLines)
         {
@@ -22,6 +30,8 @@ export abstract class _GrammarBase
             let rules = this.convertTreeToRules(parsedTree);
 
             allRules = allRules.concat(rules);
+
+            progressBar.tick()
         }
 
         // Get the unique rules from the parsed rules
@@ -49,9 +59,18 @@ export abstract class _GrammarBase
         var rules = this.rules;
         var laplaceMethod = new LaplaceSmoothingMethod(rules);
 
+        var progressBar = new ProgressBar("Computing probabilities for rules for :elapseds [:bar] :percent",
+            {
+                total: rules.length,
+                width: 50,
+                complete: "#"
+            });
+
         for (let rule of rules)
         {
             rule.probability = laplaceMethod.computeProbability(rule);
+
+            progressBar.tick()
         }
     }
 

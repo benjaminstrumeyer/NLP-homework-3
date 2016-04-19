@@ -27,6 +27,9 @@ class CKYCell {
             return 0;
         return matchingParse.score;
     }
+    searchParsesForNonTerminal(nonTerminal) {
+        return this.parses.filter(parse => parse.nonTerminal === nonTerminal)[0];
+    }
 }
 exports.CKYCell = CKYCell;
 class PossibleParse {

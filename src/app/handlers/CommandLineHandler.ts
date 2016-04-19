@@ -14,6 +14,9 @@ export class CommandLineHandler
         console.log("---------------------------------------------------------");
         console.log(CommandLineHandler.writeHelpLine("help", "Print this help text"));
         console.log();
+        console.log(CommandLineHandler.writeHelpLine("rebuild", "Rebuild the grammar file"));
+        console.log(CommandLineHandler.writeHelpLine("parse", "Run the CKY Parser on test.txt"));
+        console.log();
         console.log(CommandLineHandler.writeHelpLine("exit", "Exit Application"));
         console.log();
     }

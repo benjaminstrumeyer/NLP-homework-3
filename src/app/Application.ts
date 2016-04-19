@@ -3,6 +3,7 @@ import readlineSync = require("readline-sync");
 import {CommandLineHandler} from "./handlers/CommandLineHandler";
 import {GrammarHandler} from "./handlers/GrammarHandler";
 import {TestHandler} from "./handlers/TestHandler";
+import {CKYHandler} from "./handlers/CKYHandler";
 
 export class Application
 {
@@ -23,6 +24,8 @@ export class Application
 
                 test: TestHandler.test,
                 rebuild: GrammarHandler.rebuild,
+
+                parse: CKYHandler.parseTestText,
 
                 exit: Application.exit
             });
