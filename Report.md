@@ -1,3 +1,5 @@
+# Team: Bik Ghosh and Benjamin Strumeyer
+
 ## Evaluator
 
 The evaluator output:
